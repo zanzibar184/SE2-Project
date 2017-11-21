@@ -1,0 +1,68 @@
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    animation: App-logo-spin infinite 20s linear;
+}
+
+.Container-multimedia {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.First-media-color {
+    background-color: #e7dbce;
+}
+
+.Second-media-color {
+    background-color: #d0c4ba;
+}
+
+.Youtube-dim {
+    border:8px solid #000000;
+    border-radius: 20px;
+    position:relative;
+    margin-left: auto;
+    margin-right: auto;
+    float:none;
+    width: 426px; /*426 256*/
+    height: 240px; /*240 144*/
+    max-width: 426px; /*426 256*/
+    max-height: 240px;
+}
+
+
+.Chat-col-background {
+    background-color: #f5efe9;
+}
+
+.Vertical-fit {
+    top: 50px;
+    bottom: 28px;
+    height: calc(100vh - 50px - 28px);
+}
+
+.Scrollbar {
+    overflow-y: scroll;
+}
+
+@keyframes App-logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@media only screen and (min-width : 481px) {
+    .flex-row.row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .flex-row.row > [class*='col-'] {
+        display: flex;
+        flex-direction: column;
+    }
+    .flex-row.row:after,
+    .flex-row.row:before {
+        display: flex;
+    }
+}
