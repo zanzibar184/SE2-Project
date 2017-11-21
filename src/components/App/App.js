@@ -1,5 +1,6 @@
 import React from "react";
 import ChatBot from 'react-simple-chatbot';
+import Login from '../Login';
 
 import "./App.css";
 
@@ -10,11 +11,12 @@ const App = () => (
         <div className="row">
             <div className="col-md-8 Scrollbar Vertical-fit">
 
-
+            
             </div>
-
+            
             <div className="col-md-4 Chat-col-background Vertical-fit" >
                 <div align="center" style={{paddingTop:'20px'}}>
+                    <Login/>
                     <ChatBot
                         steps={[
                             {
