@@ -2,7 +2,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
-
+const mongo = require('./Database.js');
 const app = express();
 
 const YoutubeFinder = require('./YoutubeFinder');
@@ -34,5 +34,9 @@ app.get('/api/:id', (req, res) => {
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
 });
+
+
+
+
 
 module.exports = app;
