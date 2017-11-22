@@ -1,7 +1,7 @@
 import React from "react";
 import YoutubePlayer from 'react-youtube-player';
 
-import YoutubeSearch from '../../YoutubeSearch';
+import YoutubeSearch from '../YoutubeSearch';
 
 import "./App.css";
 
