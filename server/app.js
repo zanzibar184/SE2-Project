@@ -2,11 +2,18 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
-const mongo = require('./Database.js');
+//const mongo = require('./data.js');
 const app = express();
 
 const YoutubeFinder = require('./YoutubeFinder');
 const ytfinder = new YoutubeFinder();
+
+const Datab = require('./ClassDatab');
+const db = new Datab();
+//db.write('gian','gian.luca',90);
+db.print();
+
+
 
 // Setup del server minimale, andrà ampliato per una maggiore robustezza
 
