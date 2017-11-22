@@ -1,7 +1,7 @@
 import React from "react";
 import YoutubePlayer from 'react-youtube-player';
-import ChatBot from 'react-simple-chatbot';
 
+import YoutubeSearch from '../../YoutubeSearch';
 
 import "./App.css";
 
@@ -11,6 +11,14 @@ const App = () => (
     <div className="App">
         <div className="row">
             <div className="col-md-8 Scrollbar Vertical-fit">
+
+                <div className="row thumbnail flex-row Container-multimedia First-media-color">
+                    <YoutubeSearch search="reminiscence therapy"/>
+                </div>
+
+                <div className="row thumbnail flex-row Container-multimedia First-media-color">
+                    <YoutubeSearch search="memory loss"/>
+                </div>
 
                 <div className="row thumbnail flex-row Container-multimedia First-media-color">
                     <div className="col-lg-8">
@@ -52,15 +60,15 @@ const App = () => (
 
             <div className="col-md-4 Chat-col-background Vertical-fit" >
                 <div align="center" style={{paddingTop:'20px'}}>
-                    <ChatBot
-                        steps={[
-                            {
-                                id: 'hello-world',
-                                message: 'Hello World!',
-                                end: true,
-                            },
-                        ]}
-                    />
+
+                    <form>
+                        <label>
+                            Cerca video:
+                            <input type="text" name="name" />
+                        </label>
+                        <input type="submit" value="Submit" />
+                    </form>
+
                 </div>
             </div>
 

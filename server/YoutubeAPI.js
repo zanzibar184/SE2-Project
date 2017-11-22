@@ -1,4 +1,4 @@
-class YoutubeFinder {
+class YoutubeAPI {
 
     constructor() {
         let youtube = require('youtube-finder');
@@ -10,10 +10,11 @@ class YoutubeFinder {
             part: 'snippet',
             type: 'video',
             q: searchQuery,
-            maxResults: 5
+            maxResults: 4
         }
         this.client.search(params, function (err, data) {
             callback(data['items']);
+            //callback("Hello world!");
             //var a = data['items'][0];
             //console.log(a['id']['videoId']);
             //console.log(a['snippet']['title']);
@@ -22,4 +23,4 @@ class YoutubeFinder {
 
 }
 
-module.exports = YoutubeFinder;
+module.exports = YoutubeAPI;

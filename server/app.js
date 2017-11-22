@@ -5,8 +5,8 @@ const path = require('path');
 
 const app = express();
 
-const YoutubeFinder = require('./YoutubeFinder');
-const ytfinder = new YoutubeFinder();
+const YoutubeAPI= require('./YoutubeAPI');
+const youtube = new YoutubeAPI();
 
 // Setup del server minimale, andrà ampliato per una maggiore robustezza
 
@@ -21,7 +21,7 @@ app.get('/api/:id', (req, res) => {
         case 'youtube':
             var searchString = req.query.search;
             if(searchString) {
-                ytfinder.find(searchString, (result) => {
+                youtube.find(searchString, (result) => {
                     res.send(result);
                 });
                 return;
