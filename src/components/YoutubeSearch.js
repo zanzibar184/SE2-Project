@@ -12,7 +12,7 @@ class YoutubeSearch extends React.Component {
     componentDidMount() {
         axios.get('/api/youtube?search='+this.props.search)
             .then( (response) => {
-                console.log(response);
+                // console.log(response);
                 this.setState({
                     result:  response.data
                 });
@@ -33,10 +33,10 @@ class YoutubeSearch extends React.Component {
             var th    = v.snippet.thumbnails.medium.url; // ['snippet']['thumbnails']['medium']['url'];
             var divStyle = (index%2) ? "col-lg-3 Second-media-color" : "col-lg-3 ";
 
-            var snippet = ( <div className={divStyle}>
-                             <p><b>{title}</b></p>
-                             <img src={th} width='160' height='120' className='Youtube-preview center-block'/>
-                             <p>{desc}</p>
+            var snippet = ( <div className={divStyle} key={index}>
+                             <p><b><small>{title}</small></b></p>
+                             <img src={th} width='160' height='120' className='Youtube-preview center-block' alt='video_thumbnail'/>
+                             <p><small>{desc}</small></p>
                             </div>
             );
 
