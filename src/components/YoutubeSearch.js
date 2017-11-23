@@ -36,8 +36,8 @@ class YoutubeSearch extends React.Component {
             var snippet = (
                             <div className={divStyle} style={{height:"270px", minWidth:"205px", marginBottom:"10px"}} key={index}>
                                 <p style={{height:"50px"}}><b>{title}</b></p>
-                                <div class="row" style={{position:"relative", display:"inline-block", textAlign:"center"}}>
-                                    <img src={th} width='160' height='120' className='Youtube-preview' /> { /*Dentro className dovremo anche metterci center-block se vogliamo che l'immagine sia centrata*/ }
+                                <div className="row" style={{position:"relative", display:"inline-block", textAlign:"center"}}>
+                                    <img src={th} width='160' height='120' className='Youtube-preview' alt="thumbnail_image" /> { /*Dentro className dovremo anche metterci center-block se vogliamo che l'immagine sia centrata*/ }
                                 </div>
                                 <p style={{marginTop:"10px"}}>{desc}</p>
                             </div>
