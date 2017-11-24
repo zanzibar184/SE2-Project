@@ -1,6 +1,6 @@
 import React from 'react';
 import { GoogleLogin } from 'react-google-login-component';
-var Datab = require('/server/ClassDatab');
+import axios from 'axios';
 
 
 class Login extends React.Component{
@@ -9,15 +9,39 @@ class Login extends React.Component{
         super(props, context);
     }
 
+    
+        // Make a request for a user with a given ID
+        
+            
+    
+
+
     responseGoogle (googleUser) {
 
         var profile = googleUser.getBasicProfile();
-        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName());
-        console.log('Email: ' + profile.getEmail());
-
         var id_token = googleUser.getAuthResponse().id_token;
-        console.log({accessToken: id_token});
+
+
+        //console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        //console.log('Name: ' + profile.getName());
+        //console.log('Email: ' + profile.getEmail());
+        //console.log({accessToken: id_token});
+        
+        /*console.log('/db/write?name=' + profile.getName().split(' ').join('+') +
+                    '&email=' + profile.getEmail() +
+                    '&id=' +profile.getId());
+        */
+        
+
+        axios.get('/db/write?name=' + profile.getName().split(' ').join('+') +
+                    '&email=' + profile.getEmail() +
+                    '&id=' +profile.getId())
+              .then(function (response) {
+                console.log('response' +response.data);
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
     }
 
 

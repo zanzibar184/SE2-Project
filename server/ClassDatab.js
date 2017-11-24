@@ -7,25 +7,32 @@ class ClassDatab {
         
     }
     //scrive un nuovo elemento
-    write(name,email,age) {
+    write(name,email,id) {
         //console.log('write');
+
+        //variabile contenente i dati da inserire
         var seedData = [
           {
             mail: email,
             nome: name,
-            eta: age,
+            id: id,
 
           }
         ];
+
+        //apro la connessione
         this.mongodb.MongoClient.connect(this.uri, function(err, db) {
 
+                //accedo alla tabella
                 if(err) throw err;
                 var utenti = db.collection('shared_content');
 
+                //inserisco i dati nel db
                 utenti.insert(seedData, function(err, result) {
                 if(err) throw err;
                 });
 
+                //chiudo la connessione
                 db.close(function (err) {
                 if(err) throw err;
                 });
@@ -46,7 +53,7 @@ class ClassDatab {
                 if(err) throw err;
 
                 docs.forEach(function (doc) {
-                    console.log('Nome: ' + doc['nome'] + ' email: ' + doc['mail'] + ' età: ' + doc['eta']);
+                    console.log('Nome: ' + doc['nome'] + ' email: ' + doc['mail'] + ' id: ' + doc['id']);
                     });
 
                    

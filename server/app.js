@@ -12,7 +12,6 @@ const Datab = require('./ClassDatab');
 const db = new Datab();
 
 
-
 // Setup del server minimale, andrà ampliato per una maggiore robustezza
 
 // Setup logger
@@ -42,14 +41,22 @@ app.get('/api/:id', (req, res) => {
 
 
 //richiamo db-server
-app.get('/db/:cmd', (req, res) => {
+app.get('/db/:id', (req, res) => {
 
-       switch (req.params.cmd) {
+   // console.log('params:' + req.params.id);
+    //console.log('query:' + req.query.a);
+
+       switch (req.params.id) {
         case 'write':
            console.log('write');
-           //db.write('gian','gian.luca',90);
+           db.write(req.query.name,req.query.email,req.query.id);
+           //console.log('dati inviati:' +req.query.name,req.query.email,req.query.id);
+           //db.print();
+           res.send('true');
+           //db.drop();
+           return;
            break;
-        case 'save':
+        case 'print':
             console.log('print');
             //db.print();
             break;
@@ -61,7 +68,6 @@ app.get('/db/:cmd', (req, res) => {
             console.log('ERROR 404 this is not fantastic');
     }   
 });
-
 
 
 
