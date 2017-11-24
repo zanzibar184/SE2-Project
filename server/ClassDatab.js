@@ -20,7 +20,7 @@ class ClassDatab {
         this.mongodb.MongoClient.connect(this.uri, function(err, db) {
 
                 if(err) throw err;
-                var utenti = db.collection('utenti');
+                var utenti = db.collection('shared_content');
 
                 utenti.insert(seedData, function(err, result) {
                 if(err) throw err;
@@ -39,7 +39,7 @@ class ClassDatab {
 
                 if(err) throw err;
 
-                var utenti = db.collection('utenti');
+                var utenti = db.collection('shared_content');
 
                 utenti.find().toArray(function (err, docs) {
 
@@ -47,7 +47,7 @@ class ClassDatab {
 
                 docs.forEach(function (doc) {
                     console.log('Nome: ' + doc['nome'] + ' email: ' + doc['mail'] + ' età: ' + doc['eta']);
-                  });
+                    });
 
                    
                 });
@@ -65,7 +65,7 @@ class ClassDatab {
     drop() {
         this.mongodb.MongoClient.connect(this.uri, function(err, db) {
         if(err) throw err;
-        var utenti = db.collection('utenti');    
+        var utenti = db.collection('shared_content');    
         utenti.drop(function (err) {
             if(err) throw err;
             });

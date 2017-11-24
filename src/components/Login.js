@@ -1,5 +1,6 @@
 import React from 'react';
 import { GoogleLogin } from 'react-google-login-component';
+var Datab = require('/server/ClassDatab');
 
 
 class Login extends React.Component{
