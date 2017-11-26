@@ -19,6 +19,11 @@
     background-color: #d0c4ba;
 }
 
+.Third-media-color {
+    background-color: #5d554e;
+    color: white;
+}
+
 .Youtube-preview, .Youtube-dim{
     border:4px solid #5d554e;
     border-radius: 20px;
@@ -45,6 +50,12 @@
     top: 50px;
     bottom: 28px;
     height: calc(100vh - 50px - 28px);
+}
+
+.Chatbot {
+    top: 50px;
+    bottom: 110px;
+    height: calc(100vh - 50px - 110px);
 }
 
 .Scrollbar {
