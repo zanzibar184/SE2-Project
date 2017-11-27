@@ -23,8 +23,10 @@ class ChatBot extends React.Component {
         var input = document.getElementById('cbInput');
         if(!this.client || !input || !input.value) return;
 
+        input.disabled = true;
+
         if(this.messageList)
-            this.messageList.addComponent(<a className='list-group-item' style={{textAlign: 'left', borderStyle: 'none', background: 'linear-gradient(to right, #e7dbce , #d0c4ba)'}}>{input.value}</a>);
+            this.messageList.addComponent(<a className='list-group-item' style={{margin:'10px', textAlign: 'left', borderRadius:'30px 30px 30px 0px', borderColor:'#79716a', background: '#ffd96d', boxShadow: '2px 2px 8px #888888'}}>{input.value}</a>);
 
         this.client
             .textRequest(input.value)
@@ -37,7 +39,8 @@ class ChatBot extends React.Component {
                         response.result.contexts.forEach((ctx) => {
 
                             if (ctx.name === "richiesta-youtube-followup") {
-                                let searchText = ctx.parameters['cercaVideo.original'];
+
+                                let searchText = ctx.parameters.cercaVideo;
                                 if(searchText)
                                     this.componentList.addComponent(<YoutubeSearch search={searchText}/>);
                             }
@@ -58,14 +61,15 @@ class ChatBot extends React.Component {
             })
             .then(()=>{ input.value = ''; })
             .catch((error) => { console.log("ChatBot Error: " + error);/* do something here too */})
+            .then(() => input.disabled = false)
     }
     render() {
         let htmlCode =  <div>
-                            <div id='cbMessageContainer' className='list-group Scrollbar Second-media-color Chatbot' style={{marginTop:'10px'}}>
+                            <div id='cbMessageContainer' className='list-group Scrollbar First-media-color Chatbot' style={{marginBottom:'10px', boxShadow: '2px 2px 8px #888888'}}>
                                 <ComponentList ref={(instance)=>{this.messageList=instance;}}/>
                             </div>
                             <div className="input-group">
-                                <input id='cbInput' type="text" className="form-control" placeholder="Scrivi al bot..." onKeyDown={(event)=>{if(event.keyCode === 13) this.sendInput()}}/>
+                                <input id='cbInput' type="text" className="form-control" placeholder="Scrivi al bot..." style={{boxShadow: '2px 2px 8px #888888'}} onKeyDown={(event)=>{if(event.keyCode === 13) this.sendInput()}}/>
                                 <div className="input-group-btn">
                                     <button className="btn btn-success" onClick={this.sendInput}>
                                         <i className="glyphicon glyphicon-play"/>
