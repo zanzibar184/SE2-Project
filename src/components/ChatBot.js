@@ -37,9 +37,7 @@ class ChatBot extends React.Component {
                         response.result.contexts.forEach((ctx) => {
 
                             if (ctx.name === "richiesta-youtube-followup") {
-                                // Possibile bug nell'addestramento bot?: se rispondo "video di pippo", il campo 'ricerca.original' è "video di pippo" ma 'ricerca' ha solo la parola "video"
-                                // Secondo me quello che sta dopo video (es. 'pippo') dovrebbe essere in qualche modo catturato
-                                let searchText = ctx.parameters['ricerca.original'];
+                                let searchText = ctx.parameters['cercaVideo.original'];
                                 if(searchText)
                                     this.componentList.addComponent(<YoutubeSearch search={searchText}/>);
                             }
@@ -63,6 +61,9 @@ class ChatBot extends React.Component {
     }
     render() {
         let htmlCode =  <div>
+                            <div id='cbMessageContainer' className='list-group Scrollbar Second-media-color Chatbot' style={{marginTop:'10px'}}>
+                                <ComponentList ref={(instance)=>{this.messageList=instance;}}/>
+                            </div>
                             <div className="input-group">
                                 <input id='cbInput' type="text" className="form-control" placeholder="Scrivi al bot..." onKeyDown={(event)=>{if(event.keyCode === 13) this.sendInput()}}/>
                                 <div className="input-group-btn">
@@ -70,9 +71,6 @@ class ChatBot extends React.Component {
                                         <i className="glyphicon glyphicon-play"/>
                                     </button>
                                 </div>
-                            </div>
-                            <div id='cbMessageContainer' className='list-group Scrollbar Second-media-color Chatbot' style={{marginTop:'10px'}}>
-                                <ComponentList ref={(instance)=>{this.messageList=instance;}}/>
                             </div>
                         </div>
 
