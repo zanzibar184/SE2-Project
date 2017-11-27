@@ -41,6 +41,18 @@ class ChatBot extends React.Component {
                         if (searchText)
                             this.componentList.addComponent(<YoutubeSearch search={searchText}/>); //TODO: se c'è errore?
                     }
+                    else if(response.result.action === "cercaCanzone.nomeCanzone") {
+                            let searchArtista = response.result.parameters.cercaArtista;
+                            let searchCanzone = response.result.parameters.cercaCanzone;
+                            if (searchArtista && !searchCanzone)
+                                this.componentList.addComponent(<YoutubeSearch
+                                    search={"canzone di " + searchArtista}/>);
+                            else if (!searchArtista && searchCanzone)
+                                this.componentList.addComponent(<YoutubeSearch search={"canzone " + searchCanzone}/>);
+                            else if (searchArtista && searchCanzone)
+                                this.componentList.addComponent(<YoutubeSearch
+                                    search={"canzone " + searchCanzone + " di " + searchArtista}/>);
+                        }
                 }
 
                 // Riporto i messaggi di risposta del bot
