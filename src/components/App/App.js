@@ -3,7 +3,7 @@ import React from "react";
 // import YoutubePlayer from 'react-youtube-player';
 
 import ComponentList from '../ComponentList';
-import ChatBot from '../ChatBot';
+import ChatBot from '../ChatBot/ChatBot';
 
 import "./App.css";
 
