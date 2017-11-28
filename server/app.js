@@ -8,8 +8,8 @@ const youtube = new YoutubeAPI();
 
 
 
-const Datab = require('./ClassDatab');
-const db = new Datab();
+const DatabaseAPI = require('./DatabaseAPI');
+const db = new DatabaseAPI();
 
 
 // Setup del server minimale, andrà ampliato per una maggiore robustezza
@@ -20,27 +20,13 @@ app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:htt
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
-app.get('/api/:id', (req, res) => {
-    switch (req.params.id) {
-        case 'youtube':
-            var searchString = req.query.search;
-            if(searchString) {
-                youtube.find(searchString, (result) => {
-                    res.send(result);
-                });
-                return;
-            }
-    }
-    res.status(404).send('Comando non riconsciuto');
-});
+//----------------------------------------------------------------------------------------------
 
-//richiamo db-server
-app.get('/db/:id', (req, res) => {
-
+function handleAPIDatabase(req,res) {
     // console.log('params:' + req.params.id);
-    //console.log('query:' + req.query.a);
+    // console.log('query:' + req.query.a);
 
-    switch (req.params.id) {
+    switch (req.query.action) {
 
         case 'add':
             console.log('write');
@@ -70,13 +56,53 @@ app.get('/db/:id', (req, res) => {
             break;
 
         default:
-            res.status(404).send('ERROR 404 this is not fantastic');
+            return false;
     }
+
+    return true;
+}
+
+
+//----------------------------------------------------------------------------------------------
+
+
+function handleAPIYoutube(req, res) {
+    let searchString = req.query.search;
+    if(searchString) {
+        youtube.find(searchString, (result) => {
+            res.send(result);
+        });
+        return true;
+    }
+    return false;
+}
+
+//----------------------------------------------------------------------------------------------
+
+function handleAPIRequest(req, res) {
+    switch (req.params.id) {
+        case 'youtube':
+            return handleAPIYoutube(req, res);
+        case 'db':
+            return handleAPIDatabase(req,res);
+        default:
+            res.status(404).send("Chiamata API non riconosciuta.");
+    }
+    return true;
+}
+
+//----------------------------------------------------------------------------------------------
+
+app.get('/api/:id', (req, res) => {
+    if(!handleAPIRequest(req,res))
+        res.status(404).send("Chiamata API fallita");
 });
 
 // Always return the main index.html, so react-router render the route in the client
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
 });
+
+//-----------------------------------------------------------------------------------------------
 
 module.exports = app;

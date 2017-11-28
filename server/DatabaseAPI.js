@@ -1,4 +1,4 @@
-class ClassDatab {
+class DatabaseAPI {
 
     constructor() {
 
@@ -157,4 +157,4 @@ class ClassDatab {
 
 }
 
-module.exports = ClassDatab;
+module.exports = DatabaseAPI;
