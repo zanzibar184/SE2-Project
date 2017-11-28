@@ -4,7 +4,7 @@ import React from "react";
 
 import YoutubeSearch from '../YoutubeSearch';
 import ComponentList from '../ComponentList';
-
+import Login from '../Login';
 import "./App.css";
 
 var componentList;
@@ -12,6 +12,7 @@ var componentList;
 const App = () => (
     <div className="App">
         <div className="row">
+            <Login/>
             <div className="col-md-8 Scrollbar Vertical-fit" >
 
                 <ComponentList ref={(instance)=>{componentList = instance;}} />
@@ -69,11 +70,11 @@ const App = () => (
 
                     <div className="input-group">
                         <input id="name" type="text" className="form-control" placeholder="Search"/>
-                            <div className="input-group-btn">
-                                <button className="btn btn-default" onClick={()=>{componentList.addComponent(<YoutubeSearch search={document.getElementById('name').value}/>);}}>
-                                    <i className="glyphicon glyphicon-search"/>
-                                </button>
-                            </div>
+                        <div className="input-group-btn">
+                            <button className="btn btn-default" onClick={()=>{componentList.addComponent(<YoutubeSearch search={document.getElementById('name').value}/>);}}>
+                                <i className="glyphicon glyphicon-search"/>
+                            </button>
+                        </div>
                     </div>
 
                 </div>
