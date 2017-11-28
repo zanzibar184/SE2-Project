@@ -1,15 +1,14 @@
-// server/app.js
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
-//const mongo = require('./data.js');
 const app = express();
 
-const YoutubeFinder = require('./YoutubeFinder');
-const ytfinder = new YoutubeFinder();
 
 const Datab = require('./ClassDatab');
 const db = new Datab();
+
+db.print();
+//db.getPatientContents('d@gmail.com',2543 ,'321/563/17');
 
 
 // Setup del server minimale, andrà ampliato per una maggiore robustezza
@@ -22,24 +21,6 @@ app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 
 
-
-// richiamo ytfinder-server
-app.get('/api/:id', (req, res) => {
-    switch (req.params.id) {
-        case 'youtube':
-            var searchString = req.query.search;
-            if(searchString) {
-                ytfinder.find(searchString, (result) => {
-                    res.send(result);
-                });
-                return;
-            }
-    }
-    res.status(404).send('Comando non riconsciuto');
-});
-
-
-
 //richiamo db-server
 app.get('/db/:id', (req, res) => {
 
@@ -47,25 +28,36 @@ app.get('/db/:id', (req, res) => {
     //console.log('query:' + req.query.a);
 
        switch (req.params.id) {
-        case 'write':
+
+        case 'add':
            console.log('write');
-           db.write(req.query.name,req.query.email,req.query.id);
-           //console.log('dati inviati:' +req.query.name,req.query.email,req.query.id);
-           //db.print();
-           res.send('true');
-           //db.drop();
-           return;
+           db.addSharedContent(  req.query.email,
+                      req.query.id_patient,
+                      req.query.date,
+                      req.query.content_id,
+                      req.query.content
+                      );
            break;
+
         case 'print':
-            console.log('print');
-            //db.print();
+            db.print();
             break;
-        case 'delete':
-            console.log('delete');
-            //db.drop();
+
+        case 'remove':
+            db.removeSharedContent(  
+                      req.query.email,
+                      req.query.id_patient,
+                      req.query.date
+                      );
+            
             break;
+
+        case 'drop':
+            db.drop();
+            break;
+
         default:
-            console.log('ERROR 404 this is not fantastic');
+          res.status(404).send('ERROR 404 this is not fantastic');
     }   
 });
 

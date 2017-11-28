@@ -26,14 +26,8 @@ class Login extends React.Component{
         //console.log('Name: ' + profile.getName());
         //console.log('Email: ' + profile.getEmail());
         //console.log({accessToken: id_token});
-        
-        /*console.log('/db/write?name=' + profile.getName().split(' ').join('+') +
-                    '&email=' + profile.getEmail() +
-                    '&id=' +profile.getId());
-        */
-        
-
-        axios.get('/db/write?name=' + profile.getName().split(' ').join('+') +
+  
+        /*axios.get('/db/add?name=' + profile.getName().split(' ').join('+') +
                     '&email=' + profile.getEmail() +
                     '&id=' +profile.getId())
               .then(function (response) {
@@ -41,7 +35,7 @@ class Login extends React.Component{
               })
               .catch(function (error) {
                 console.log(error);
-              });
+              });*/
     }
 
 
@@ -51,7 +45,7 @@ class Login extends React.Component{
         return (
             <div>
 
-                <GoogleLogin socialId="627730180741-mnttqlpi0hcn1l5u6vrmhih3m370eldk.apps.googleusercontent.com" //id api google
+                <GoogleLogin socialId=" 521032149458-2uuccstqvqe6iepohkl0kdoh8jpd32q1.apps.googleusercontent.com " //id api google
                              className="google-login"
                              scope="profile"
                              fetchBasicProfile={true}
