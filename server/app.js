@@ -7,9 +7,6 @@ const app = express();
 const Datab = require('./ClassDatab');
 const db = new Datab();
 
-db.print();
-//db.getPatientContents('d@gmail.com',2543 ,'321/563/17');
-
 
 // Setup del server minimale, andrà ampliato per una maggiore robustezza
 
