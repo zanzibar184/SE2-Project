@@ -2,19 +2,18 @@ import React from "react";
 
 // import YoutubePlayer from 'react-youtube-player';
 
-import YoutubeSearch from '../YoutubeSearch';
 import ComponentList from '../ComponentList';
 import Login from '../Login';
-import "./App.css";
+import ChatBot from '../ChatBot/ChatBot';
 
-var componentList;
+import "./App.css";
 
 const App = () => (
     <div className="App">
         <div className="row">
             <div className="col-md-8 Scrollbar Vertical-fit" >
 
-                <ComponentList ref={(instance)=>{componentList = instance;}} />
+                <ComponentList ref={(instance)=>{this.componentList = instance;}} />
 
                 {/*
                 <div className="row thumbnail flex-row Container-multimedia First-media-color">
@@ -66,17 +65,12 @@ const App = () => (
 
             <div className="col-md-4 Chat-col-background Vertical-fit" >
                 <div align="center" style={{paddingTop:'20px'}}>
+
                     <Login/>
-                    <div className="input-group">
-                        <input id="name" type="text" className="form-control" placeholder="Search"/>
-                        <div className="input-group-btn">
-                            <button className="btn btn-default" onClick={()=>{componentList.addComponent(<YoutubeSearch search={document.getElementById('name').value}/>);}}>
-                                <i className="glyphicon glyphicon-search"/>
-                            </button>
-                        </div>
-                    </div>
+                    <ChatBot ref={(instance)=> { instance.componentList = this.componentList; }}/>
 
                 </div>
+
             </div>
 
         </div>
