@@ -12,7 +12,6 @@ var componentList;
 const App = () => (
     <div className="App">
         <div className="row">
-            <Login/>
             <div className="col-md-8 Scrollbar Vertical-fit" >
 
                 <ComponentList ref={(instance)=>{componentList = instance;}} />
@@ -67,7 +66,7 @@ const App = () => (
 
             <div className="col-md-4 Chat-col-background Vertical-fit" >
                 <div align="center" style={{paddingTop:'20px'}}>
-
+                    <Login/>
                     <div className="input-group">
                         <input id="name" type="text" className="form-control" placeholder="Search"/>
                         <div className="input-group-btn">

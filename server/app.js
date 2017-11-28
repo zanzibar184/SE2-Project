@@ -72,6 +72,7 @@ app.get('/db/:id', (req, res) => {
         default:
             res.status(404).send('ERROR 404 this is not fantastic');
     }
+});
 
 // Always return the main index.html, so react-router render the route in the client
 app.get('*', (req, res) => {
