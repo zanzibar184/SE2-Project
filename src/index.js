@@ -8,6 +8,8 @@ import './style.css';
 import App from './components/App/App';
 import NotFound from './components/NotFound'
 
+import Login from './components/Login/Login';
+
 ReactDOM.render((
     <BrowserRouter>
         <main>
@@ -18,3 +20,7 @@ ReactDOM.render((
         </main>
     </BrowserRouter>
 ), document.getElementById('root'));
+
+ReactDOM.render((
+    <Login/>
+), document.getElementById('navbarLogin'));

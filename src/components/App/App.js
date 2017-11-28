@@ -3,7 +3,6 @@ import React from "react";
 // import YoutubePlayer from 'react-youtube-player';
 
 import ComponentList from '../ComponentList';
-import Login from '../Login';
 import ChatBot from '../ChatBot/ChatBot';
 
 import "./App.css";
@@ -66,7 +65,6 @@ const App = () => (
             <div className="col-md-4 Chat-col-background Vertical-fit" >
                 <div align="center" style={{paddingTop:'20px'}}>
 
-                    <Login/>
                     <ChatBot ref={(instance)=> { instance.componentList = this.componentList; }}/>
 
                 </div>

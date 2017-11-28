@@ -2,6 +2,8 @@ import React from 'react';
 import { GoogleLogin } from 'react-google-login-component';
 import axios from 'axios';
 
+import googleIcon from './google_icon_32x32.png';
+
 
 class Login extends React.Component{
  
@@ -48,7 +50,14 @@ class Login extends React.Component{
                      scope="profile"
                      fetchBasicProfile={false}
                      responseHandler={this.responseGoogle}
-                     buttonText="Login With Google"/>
+                     style={{border:'none', background:'transparent'}}>
+            <div className="input-group">
+                <button className="btn btn-danger" style={{padding:'3px'}}>
+                    <img src={googleIcon} alt='google_icon' width='32px' height='32px' style={{marginRight:'2px'}}/>
+                    <b>Login con Google</b>
+                </button>
+            </div>
+        </GoogleLogin>
       </div>
     );
   }
