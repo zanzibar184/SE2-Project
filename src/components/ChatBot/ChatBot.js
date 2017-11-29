@@ -39,26 +39,42 @@ class ChatBot extends React.Component {
                     if(response.result.action === "RicercaVideoYT.video-cerca") {
                         let searchText = response.result.parameters.cercaVideo;
                         if (searchText)
-                            this.componentList.addComponent(<YoutubeSearch search={searchText}/>); //TODO: se c'è errore?
+                            this.componentList.addComponent(<YoutubeSearch search={searchText}/>); /*TODO: gestione errore*/
+                    } else if(response.result.action === "cercaCanzone.nomeCanzone") {
+                        let searchArtista = response.result.parameters.cercaArtista;
+                        let searchCanzone = response.result.parameters.cercaCanzone;
+                        if (searchArtista && !searchCanzone)
+                            this.componentList.addComponent(<YoutubeSearch
+                                search={"canzone di " + searchArtista}/>);
+                        else if (!searchArtista && searchCanzone)
+                            this.componentList.addComponent(<YoutubeSearch search={"canzone " + searchCanzone}/>);
+                        else if (searchArtista && searchCanzone)
+                            this.componentList.addComponent(<YoutubeSearch
+                                search={"canzone " + searchCanzone + " di " + searchArtista}/>);
+                        /*TODO: gestione errore*/
                     }
-                    else if(response.result.action === "cercaCanzone.nomeCanzone") {
-                            let searchArtista = response.result.parameters.cercaArtista;
-                            let searchCanzone = response.result.parameters.cercaCanzone;
-                            if (searchArtista && !searchCanzone)
-                                this.componentList.addComponent(<YoutubeSearch
-                                    search={"canzone di " + searchArtista}/>);
-                            else if (!searchArtista && searchCanzone)
-                                this.componentList.addComponent(<YoutubeSearch search={"canzone " + searchCanzone}/>);
-                            else if (searchArtista && searchCanzone)
-                                this.componentList.addComponent(<YoutubeSearch
-                                    search={"canzone " + searchCanzone + " di " + searchArtista}/>);
-                        }
                 }
 
                 // Riporto i messaggi di risposta del bot
                 let respMessages = response.result.fulfillment.messages;
                 if(this.messageList){
                     respMessages.forEach((item)=> {
+                        if(response.result.action === "Aiuto.tipoAiuto" || response.result.action === "aiutoDiretto") {
+                            let cercaAiuto = response.result.parameters.Aiuto;
+                            if (cercaAiuto === "video")
+                            {
+                                item.speech="Se vuoi cercare un video scrivi -Voglio cercare un video-. Alla risposta del chatbot -Che video vuoi vedere?- potrai rispondere direttamente con il testo che vuoi cercare su youtube o con l'argomento di cui vuoi trovare il video. Appariranno alla tua sinistra i primi 4 risultati e potrai vedere i video cliccandoci sopra."
+                            }else if (cercaAiuto === "canzone")
+                            {
+                                item.speech = "Se vuoi cercare un video scrivi -Voglio cercare una canzone-. Alla risposta del chatbot -Che canzone vuoi ascoltare?- potrai rispondere con il titolo della canzone, con il nuome dell'artista o con entrambi. Appariranno alla tua sinistra i primi 4 risultati e potrai ascoltare la canzone cliccandoci sopra."
+                            }else if (cercaAiuto === "login")
+                            {
+                                item.speech = "Per poter condividere i contenuti con un altro dispositivo è necessario fare il login. Per fare login clicca sul logo in alto a destra e segui le indicazioni. Il login potrà essere effettuato solo con un account Google."
+                            }else if (cercaAiuto === "condividere")
+                            {
+                                item.speech = "Per poter condividere i contenuti con un altro dispositivo devi avere eseguito il login." /*TODO: da completare*/
+                            }
+                        }
                         if(item.speech)
                             this.messageList.addComponent(<a className='list-group-item Msj_server'><b><i>{item.speech}</i></b></a>);
                     })
