@@ -4,6 +4,8 @@ import {ApiAiClient} from "api-ai-javascript/es6/ApiAiClient";
 import ComponentList from '../ComponentList';
 import YoutubeSearch from "../YoutubeSearch";
 
+import session from '../../SessionManager';
+
 // Importa lo stile CSS per il componente
 import "./ChatBot.css";
 
@@ -19,6 +21,18 @@ class ChatBot extends React.Component {
 
         // Bind del metodo sendInput per poterlo utilizzare all'interno del metodo render()
         this.sendInput = this.sendInput.bind(this);
+
+        //--------------------------------------------------
+
+        session.addLoginCallback( (isLogged) => {
+
+            let message = (isLogged)?'Benvenuto ' + session.getLoggedUser().getName() + "! Cosa posso fare per te?"
+                                    : 'Arrivederci a presto!';
+            this.messageList.addComponent(<a className='list-group-item Msj_server'><b><i>{message}</i></b></a>);
+        })
+
+        //--------------------------------------------------
+
     }
 
     // Chiamato da React quando il componente è montato per la prima volta

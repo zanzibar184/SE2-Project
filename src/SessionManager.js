@@ -6,6 +6,15 @@ Esempi di utilizzo in un altro modulo / componente:
 
     import Session from './SessionManager';
 
+
+    Session.addLoginCallback( (isLogged) => {
+        if(isLogged) console.log("Qualcuno si è loggato!");
+        else         console.log("Qualcuno ha fatto il logout!");
+        });
+
+    // ... una volta ottenuto il profilo dell'utente loggato da google (es. 'loginUserProfile') ( vedi Login.js )
+    Session.login(loginUserProfile);
+
     let myContentList;
     Session.getSharedContents((list)=>{ myContentList = list; });
 
@@ -13,9 +22,7 @@ Esempi di utilizzo in un altro modulo / componente:
 
     Session.removeSharedContent(1511955620019);
 
-    Session.setUserMail('pippo@gmail.com');
-
-    Session.setPatientID('mio_paziente');
+    Session.logout();
 
 */
 
@@ -25,30 +32,45 @@ class SessionManager {
 
     constructor() {
 
-       this.loginMail = null; // 'bloh2@hfs.it';
+        this.loginUserProfile = null;
 
         // Attualmente, per semplicità, gestiamo un solo paziente per operatore ma
         // è possibile avere più pazienti assegnando valori diversi a questa variabile
-       this.patientID = 'p0'; // 'pippo';
+        this.patientID = 'p0'; // 'pippo';
+
+        this.onLoginEventCallbacks = [];
 
     }
 
     //-----------------------------------------------------------------
 
-    setUserMail(email) { this.loginMail = email; }
+    addLoginCallback(callback) {
+        this.onLoginEventCallbacks.push(callback);
+    }
 
-    getUserMail() { return this.loginMail; }
+    //-----------------------------------------------------------------
 
-    setPatientID(id) { this.patientID = id; }
+    login(loggedUserProfile/*, patientId*/) {
+        if(!loggedUserProfile) return;
+        this.loginUserProfile = loggedUserProfile;
+        //if(patientId)
+        //    this.patientID = patientId;
+        this.onLoginEventCallbacks.forEach((c) => c(true));
+    }
+
+    logout() {
+        this.loginUserProfile = null;
+        // this.patientID = null;
+        this.onLoginEventCallbacks.forEach((c) => c(false));
+    }
+
+    //-----------------------------------------------------------------
+
+    getLoggedUser() { return this.loginUserProfile; }
 
     getPatientID() { return this.patientID; }
 
-    reset() {
-        this.setUserMail(null);
-        this.setPatientID(null);
-    }
-
-   isLogged() { return this.loginMail && this.patientID; }
+    isLogged() { return this.loginUserProfile && this.patientID; }
 
     //-----------------------------------------------------------------
 
