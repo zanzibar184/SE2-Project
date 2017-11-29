@@ -9,7 +9,6 @@ import App from './components/App/App';
 import NotFound from './components/NotFound'
 
 import Login from './components/Login/Login';
-import Logout from './components/Login/Logout';
 
 ReactDOM.render((
     <BrowserRouter>
@@ -25,7 +24,3 @@ ReactDOM.render((
 ReactDOM.render((
     <Login/>
 ), document.getElementById('navbarLogin'));
-
-ReactDOM.render((
-    <Logout/>
-), document.getElementById('navbarLogout'));

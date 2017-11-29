@@ -40,6 +40,16 @@ class SessionManager {
 
         this.onLoginEventCallbacks = [];
 
+        this.addLoginCallback = this.addLoginCallback.bind(this);
+        this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
+        this.getLoggedUser = this.getLoggedUser.bind(this);
+        this.getPatientID = this.getPatientID.bind(this);
+        this.isLogged = this.isLogged.bind(this);
+        this.getSharedContents = this.getSharedContents.bind(this);
+        this.addSharedContent = this.addSharedContent.bind(this);
+        this.removeSharedContent = this.removeSharedContent(this);
+
     }
 
     //-----------------------------------------------------------------
