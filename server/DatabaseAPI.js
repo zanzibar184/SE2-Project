@@ -8,8 +8,12 @@ class DatabaseAPI {
     }
 
     //scrive un nuovo elemento
-    addSharedContent(email, id_patient, date, content_id, content){
-        var seedData = [
+    addSharedContent(email, id_patient, date, content_id, content) {
+
+        if(!email || !id_patient || !date || !content_id || !content)
+            return false;
+
+        let seedData = [
           {
             email: email,
             id_patient: id_patient,
@@ -20,91 +24,107 @@ class DatabaseAPI {
           }
         ];
 
-        //apro la connessione
-        this.mongodb.MongoClient.connect(this.uri, function(err, db) {
+        let database = null;
+        let retValue = true;
 
-                //accedo alla tabella
-                if(err) throw err;
-                var table = db.collection('shared_content');
+        this.mongodb.MongoClient.connect(this.uri)
+            .then((db) => {
+                database = db;
+                return db.collection('shared_content');
+            })
+            .then((table) => {
+                return table.insert(seedData);
+            })
+            .then((result)=> {
+                console.log(result);
+            })
+            .catch((err) => {
+                retValue = false;
+                console.log("Error: database.addSharedContent > " + err);
+            })
+            .then(() => {
+                if(database) {
+                    database.close();
+                }
+            });
 
-                //inserisco i dati nel db
-                table.insert(seedData, function(err, result) {
-                if(err) throw err;
-                });
-
-                //chiudo la connessione
-                db.close(function (err) {
-                if(err) throw err;
-                });
-
-                db.close();
-
-             });
+        return retValue;
      }
 
-    removeSharedContent(email_r, id_patient_r, date_r){
+    // rimuove un elemento esistente
+    removeSharedContent(email_r, id_patient_r, date_r) {
 
-        this.mongodb.MongoClient.connect(this.uri, function(err, db) {
+        if(!email_r || !id_patient_r || !date_r)
+            return false;
 
-            if(err) throw err;
-             var table = db.collection('shared_content');
-                table.remove(
+        let database = null;
+        let retValue = true;
 
-                    {email: email_r}, 
-                    {id_patient: id_patient_r},
-                    {date: date_r}, 
+        this.mongodb.MongoClient.connect(this.uri)
+            .then((db) => {
+                database = db;
+                return db.collection('shared_content');
+            })
+            .then((table) => {
+                return table.remove(
+                    {email: email_r,
+                    id_patient: id_patient_r,
+                    date: date_r});
+            })
+            .then((result)=> {
+                console.log(result);
+            })
+            .catch((err) => {
+                retValue = false;
+                console.log("Error: database.removeSharedContent > " + err);
+            })
+            .then(() => {
+                if(database) {
+                    database.close();
+                }
+            });
 
-                    function(err, result) {
-                        if (err) {
-                            console.log(err);
-                        }
-                        console.log(result);
-                        db.close();
+        return retValue;
+    }
+
+    getPatientContents(email_f,id_patient_f, res) {
+
+       if(!email_f || !id_patient_f || !res ) return false;
+
+        let database = null;
+        let retValue = true;
+
+        this.mongodb.MongoClient.connect(this.uri)
+            .then((db) => {
+                database = db;
+                return db.collection('shared_content');
+            })
+            .then((table) => {
+                return table.find({
+                    email: email_f,
+                    id_patient: id_patient_f
                 });
-            
-        });
+            }).then((cursor) => {
+               return cursor.toArray();
+            })
+            .then((array) => {
+                res.send(array);
+            })
+            .catch((err) => {
+                retValue = false;
+                res.status(404).send([]);
+                console.log("Error: database.removeSharedContent > " + err);
+            })
+            .then(() => {
+                if(database) {
+                    database.close();
+                }
+            });
 
-
-     }
-
-
-//-------PROBLEMA NEL SALVARE DOCS
-    getPatientContents(email_f,id_patient_f,date_f) {
-
-       
-
-        this.mongodb.MongoClient.connect(this.uri, function(err, db) {
-
-                if(err) throw err;
-                var table = db.collection('shared_content');
-
-                var find=table.find({
-                                            email: email_f,
-                                            id_patient: id_patient_f,
-                                            date:date_f
-                                        });
-
-                find.toArray(function (err, docs) {
-   
-                        if(err) throw err;
-                        docs.forEach(function (doc) {
-                        // how to save          
-                        console.log(docs);     
-          
-                    });
-
-                   
-                });
-
-                    //console.log(find);     
-                    db.close(function (err) {
-                    if(err) throw err;
-                    //console.log('chiuso db');
-                    });
-        });
-
+        return retValue;
     };
-//-------------------------
+
+    //----------------------------------------------------------------------------
 
      //stampa gli elementi della tabella
     print() {

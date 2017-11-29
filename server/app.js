@@ -26,40 +26,40 @@ function handleAPIDatabase(req,res) {
     // console.log('params:' + req.params.id);
     // console.log('query:' + req.query.a);
 
+    let result;
+
     switch (req.query.action) {
 
         case 'add':
-            console.log('write');
-            db.addSharedContent(  req.query.email,
+            result = db.addSharedContent(
+                req.query.email,
                 req.query.id_patient,
                 req.query.date,
                 req.query.content_id,
                 req.query.content
             );
-            break;
-
-        case 'print':
-            db.print();
-            break;
-
-        case 'remove':
-            db.removeSharedContent(
+            res.status(result?200:404).send(result);
+            return result;
+        case 'rem':
+            result = db.removeSharedContent(
                 req.query.email,
                 req.query.id_patient,
                 req.query.date
             );
-
-            break;
-
+            res.status(result?200:404).send(result);
+            return result;
+        case 'get':
+            return db.getPatientContents(req.query.email, req.query.id_patient, res);
+        case 'print':
+            db.print();
+            res.status(200).send('OK');
+            return true;
         case 'drop':
             db.drop();
-            break;
-
-        default:
-            return false;
+            res.status(200).send('OK');
+            return true;
     }
-
-    return true;
+    return false;
 }
 
 
