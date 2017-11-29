@@ -2,7 +2,7 @@ import React from 'react';
 import { GoogleLogin } from 'react-google-login-component';
 
 import session from '../../SessionManager';
-import googleIcon from './google_icon_32x32.png';
+import googleIcon from './google_icon2_32x32.png';
 
 
 class Login extends React.Component{
