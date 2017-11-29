@@ -11,7 +11,7 @@ class YoutubeAPI {
             type: 'video',
             q: searchQuery,
             maxResults: 4
-        }
+        };
         this.client.search(params, function (err, data) {
             callback(data['items']);
             //callback("Hello world!");
