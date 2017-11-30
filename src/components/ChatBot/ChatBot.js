@@ -145,7 +145,7 @@ class ChatBot extends React.Component {
                         }
 
                         if(item.speech)// se non vuoto mostro il testo di quel messaggio aggiungendolo a messageList
-                            this.messageList.addComponent(<a className='list-group-item Msj_server'><font color={"black"}><b>Chatbot:</b></font><br/><b>{messaggio}</b></a>);
+                            this.messageList.addComponent(<a className='list-group-item Msj_server'><font color={"black"}><b>Chatbot:</b></font><br/>{messaggio}</a>);
                     })
                 }
 
