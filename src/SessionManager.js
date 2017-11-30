@@ -48,7 +48,7 @@ class SessionManager {
         this.isLogged = this.isLogged.bind(this);
         this.getSharedContents = this.getSharedContents.bind(this);
         this.addSharedContent = this.addSharedContent.bind(this);
-        this.removeSharedContent = this.removeSharedContent(this);
+        this.removeSharedContent = this.removeSharedContent.bind(this);
 
     }
 
@@ -121,7 +121,7 @@ class SessionManager {
             })
             .then( (data) => {
                 console.log(data);
-                if(callback) callback(true);
+                if(callback) callback(true, time);
             })
             .catch( (error) => {
                 console.log("Error: " + error);
