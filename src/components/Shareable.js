@@ -46,8 +46,8 @@ class Shareable extends React.Component {
     render() {
         if(this.state.enabled) {
 
-            let style = (this.isShared())   ? 'btn-danger glyphicon-remove'
-                                            : 'btn-success glyphicon-share';
+            let style = (this.isShared())   ? 'btn-success glyphicon-ok-sign'
+                                            : 'btn-default glyphicon-share';
 
             return <div style={{height: '100%'}}>
                 {/* React.Children.map(this.props.children, function(c){ return c;}) */ this.props.children}
