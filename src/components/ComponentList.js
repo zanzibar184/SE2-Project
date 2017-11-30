@@ -18,7 +18,7 @@ class ComponentList extends React.Component {
     }
 
     render() {
-        var compList = this.state.list.map(function(component, index) {
+        let compList = this.state.list.map(function(component, index) {
             return <div key={index}>{component}</div>;
         });
         return (<div>{compList}</div>);
