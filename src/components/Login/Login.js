@@ -77,7 +77,9 @@ class Login extends React.Component {
 
             return <button className="btn btn-danger glyphicon glyphicon-log-out" style={{height: '40px'}}
                            onClick={() => {
-                               let win = window.open("http://accounts.google.com/logout", '', "width=550,height=570");
+                               //let win = window.open("http://accounts.google.com/logout", '', "width=550,height=570");
+                               let win = window.open("http://accounts.google.com/logout", '_blank', 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,left=0, top=0, width=550, height=570, visible=none', '');
+                               window.focus();
                                setTimeout(() => {
                                    win.close();
                                    this.onLogoutSuccess();
