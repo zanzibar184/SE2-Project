@@ -3,6 +3,7 @@ import {ApiAiClient} from "api-ai-javascript/es6/ApiAiClient";
 
 import ComponentList from '../ComponentList';
 import YoutubeSearch from "../YoutubeSearch";
+import YoutubePlayer from 'react-youtube-player';
 
 import session from '../../SessionManager';
 
@@ -59,6 +60,19 @@ class ChatBot extends React.Component {
         // messageList: istanza di un componente 'ComponentList' che contiene i messaggi scambiati tra utente e Dialogflow
         if(this.messageList)
             this.messageList.addComponent(<a className='list-group-item Msj_client'>{input.value}</a>);
+
+        // Easter egg
+        if(input.value==='faaantastico') {
+            let video = <div className="row thumbnail flex-row Container-multimedia Second-media-color center-block" style={{maxWidth:'823px', marginBottom:'5px'}}>
+                    <div className="col-lg-12 center-block">
+                        <div className="Youtube-dim">
+                            <YoutubePlayer videoId='nMZJKGyu-Kk' />
+                        </div>
+                    </div>
+                </div>;
+            this.componentList.addComponent(video);
+            return;
+        }
 
         this.client
             // Mando il messaggio dell'utente al server di Dialogflow
