@@ -91,7 +91,7 @@ class SessionManager {
            return;
        }
 
-       axios.get('/api/db?action=get&email='+this.loginMail+'&id_patient='+this.patientID)
+       axios.get('/api/db?action=get&email='+this.loginUserProfile.getEmail()+'&id_patient='+this.patientID)
            .then( (response) => {
                return response.data;
            })
@@ -115,7 +115,7 @@ class SessionManager {
         }
 
         let time = new Date().getTime();
-        axios.get('/api/db?action=add&email='+this.loginMail+'&id_patient='+this.patientID+'&date=' + time +'&content_id='+id+'&content='+url)
+        axios.get('/api/db?action=add&email='+this.loginUserProfile.getEmail()+'&id_patient='+this.patientID+'&date=' + time +'&content_id='+id+'&content='+url)
             .then( (response) => {
                 return response.data;
             })
