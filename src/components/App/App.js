@@ -36,7 +36,8 @@ class App extends React.Component {
                             <div className="col-md-4 Chat-col-background Vertical-fit">
                                 <div align="center" style={{paddingTop: '20px'}}>
                                     <ChatBot ref={(instance) => {
-                                        instance.componentList = this.componentList;
+                                        if(instance)
+                                            instance.componentList = this.componentList;
                                     }}/>
                                 </div>
                             </div>
@@ -46,9 +47,7 @@ class App extends React.Component {
             view = <div className="App">
                         <div className="row">
                             <div className="col-md-12 Scrollbar Vertical-fit">
-                                <ComponentList ref={(instance) => {
-                                    this.componentList = instance;
-                                }}/>
+                                <ComponentList/>
                             </div>
                         </div>
                     </div>;
