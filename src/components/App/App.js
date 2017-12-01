@@ -4,13 +4,11 @@ import ComponentList from '../ComponentList';
 import ChatBot from '../ChatBot/ChatBot';
 
 import "./App.css";
-import GetPatientName from "../GetPatientName";
 
 // path="/:myvalue" -> this.props.match.params.myvalue
 
 const App = () => (
     <div className="App">
-        <GetPatientName/>
         <div className="row">
             <div className="col-md-8 Scrollbar Vertical-fit" >
                 <ComponentList ref={(instance)=>{this.componentList = instance;}} />
