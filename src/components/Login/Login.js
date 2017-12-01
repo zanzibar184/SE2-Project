@@ -53,7 +53,7 @@ class Login extends React.Component {
         if (!this.state.logged) {
 
             return <GoogleLogin
-                clientId="521032149458-2uuccstqvqe6iepohkl0kdoh8jpd32q1.apps.googleusercontent.com"
+                clientId="1028425913205-j5sbr85488id2mosjc5fj68mgb1usmrg.apps.googleusercontent.com"
                 onSuccess={this.onLoginSuccess}
                 onFailure={(response) => console.error(response)}
                 onRequest={() => console.log('loading')}
