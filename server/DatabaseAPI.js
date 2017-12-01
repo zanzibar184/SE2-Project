@@ -87,33 +87,39 @@ class DatabaseAPI {
         return retValue;
     }
 
-    getPatientContents(email_f,id_patient_f, res) {
+getPatientContents(email_f,id_patient_f, res) {
 
-       if(!email_f || !id_patient_f || !res ) return false;
+       if(!id_patient_f || !res) return false;
 
         let database = null;
         let retValue = true;
-
         this.mongodb.MongoClient.connect(this.uri)
             .then((db) => {
                 database = db;
                 return db.collection('shared_content');
             })
             .then((table) => {
-                return table.find({
-                    email: email_f,
-                    id_patient: id_patient_f
-                });
+            	if(!email_f)
+	                return table.find({
+	                    id_patient: id_patient_f
+	                });
+	            else
+	            	return table.find({
+	                    email: email_f,
+	                    id_patient: id_patient_f
+	                });
+
             }).then((cursor) => {
                return cursor.toArray();
             })
             .then((array) => {
+                console.log(array);
                 res.send(array);
             })
             .catch((err) => {
                 retValue = false;
                 res.status(404).send([]);
-                console.log("Error: database.removeSharedContent > " + err);
+                console.log("Error: database.getPatientContents " + err);
             })
             .then(() => {
                 if(database) {
