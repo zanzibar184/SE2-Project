@@ -49,6 +49,7 @@ class Shareable extends React.Component {
             let style = (this.isShared())   ? 'btn-success glyphicon-ok-sign'
                                             : 'btn-default glyphicon-share';
 
+            //TODO: Modificare lo stile per essere utilizzabile su più componenti e non solo su YoutubePlayer
             return <div style={{height: '100%'}}>
                 {/* React.Children.map(this.props.children, function(c){ return c;}) */ this.props.children}
                 <button className={'btn glyphicon pull-right ' + style } aria-hidden='true'

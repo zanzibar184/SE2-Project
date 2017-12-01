@@ -178,8 +178,10 @@ class ChatBot extends React.Component {
                 }
 
                 // Forzo la scroll-bar dei messaggi utente/Dialogflow a scendere per mostrare il contenuto più recente
+                // FIXME: Su Microsoft Edge non funziona 'scrollTo' (testato e funzionante su Safari e Firefox)
                 let container = document.getElementById('cbMessageContainer');
-                container.scrollTo(0,container.scrollHeight);
+                if(container && container.scrollTo)
+                    container.scrollTo(0,container.scrollHeight);
 
             }) // Poi: elimino il testo contenuto nell'input utente (dal momento che è già stato processato)
             .then(()=>{ input.value = ''; })
