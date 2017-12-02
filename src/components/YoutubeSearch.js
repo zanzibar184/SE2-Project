@@ -27,8 +27,8 @@ class YoutubeSearch extends React.Component {
     }
 
     displaySelectedVideo(id){
-        this.componentList.addComponent(
-            <div className="row thumbnail flex-row Container-multimedia Second-media-color center-block" style={{maxWidth:'823px', marginBottom:'5px'}}>
+        this.multimediaContents.addComponent(
+            <div className="row thumbnail flex-row Container-multimedia Second-media-color center-block" style={{marginLeft:'5px', marginRight:'5px', marginBottom:'5px', height:'280px'}}>
                 <div className="col-lg-12 center-block">
                     <div className="Youtube-dim">
                         <Shareable type='youtube' content={id}>
@@ -49,22 +49,28 @@ class YoutubeSearch extends React.Component {
             if(desc.length > 70)  desc  = desc.substring(0, 70) + '...';
             let id    = v.id.videoId;
             let th    = v.snippet.thumbnails.medium.url; // ['snippet']['thumbnails']['medium']['url'];
-            let divStyle = "col-md-3 " + ((index%2) ? "Second-media-color" : "First-media-color");
+            let divStyle = "col-xs-3 " + ((index%2) ? "Second-media-color" : "First-media-color");
 
             let snippet = (
-                            <div className={divStyle} style={{height:"270px", minWidth:"205px", marginBottom:"5px", marginTop:'20px'}} key={index}>
-                                <p style={{height:"50px"}}><b>{title}</b></p>
-                                <div className="row" style={{position:"relative", display:"inline-block", textAlign:"center"}}>
-                                    <img src={th} width='160' height='120' className='Youtube-preview' alt="thumbnail_image" onClick={() => videodisplay(id)} onMouseOver=""/> { /*Dentro className dovremo anche metterci center-block se vogliamo che l'immagine sia centrata*/ }
+                            <div className={divStyle} style={{height:'100%', margin:'0 !important'}} key={index}>
+                                <div style={{height:'45px', lineHeight: '45px', textAlign: 'center'}}>
+                                    <span style={{display: 'inline-block', verticalAlign: 'middle', lineHeight: 'normal'}}><b>{title}</b></span>
                                 </div>
-                                <p style={{marginTop:"10px"}}>{desc}</p>
+
+                                <img style={{marginTop:'5px'}} src={th} width='160px' height='120px' className='Youtube-preview' alt="thumbnail_image" onClick={() => videodisplay(id)} /> { /*Dentro className dovremo anche metterci center-block se vogliamo che l'immagine sia centrata*/ }
+
+                                <div style={{height:'85px', lineHeight: '85px', textAlign: 'center'}}>
+                                    <span style={{display: 'inline-block', verticalAlign: 'middle', lineHeight: 'normal'}}>{desc}</span>
+                                </div>
                             </div>
             );
 
             return snippet;
         });
 
-        return <div>{videos}</div>;
+        return <div className="row thumbnail flex-row center-block" style={{display:'inline-flex', height:'270px', marginLeft:'5px', marginRight:'5px', marginBottom:'0'}}>
+                        {videos}
+                </div>;
     }
 }
 

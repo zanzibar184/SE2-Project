@@ -7,7 +7,7 @@ class Shareable extends React.Component {
         super(props);
         this.state = {
             enabled: session.isLogged(),
-            sharedTime: 0
+            sharedTime: this.props.date
         };
 
         session.addLoginCallback((logged)=> {
@@ -20,7 +20,7 @@ class Shareable extends React.Component {
     }
 
     isShared() {
-        return this.state.sharedTime !== 0;
+        return !!this.state.sharedTime;
     }
 
     componentDidMount() {
@@ -32,7 +32,7 @@ class Shareable extends React.Component {
         if(this.isShared()) {
             session.removeSharedContent(this.state.sharedTime, (success) => {
                 if(success)
-                    this.setState({ sharedTime: 0 });
+                    this.setState({ sharedTime: null });
             });
         } else if(this.props.type && this.props.content) {
             session.addSharedContent(this.props.type, this.props.content, (success, time) => {
@@ -49,6 +49,7 @@ class Shareable extends React.Component {
             let style = (this.isShared())   ? 'btn-success glyphicon-ok-sign'
                                             : 'btn-default glyphicon-share';
 
+            //TODO: Modificare lo stile per essere utilizzabile su più componenti e non solo su YoutubePlayer
             return <div style={{height: '100%'}}>
                 {/* React.Children.map(this.props.children, function(c){ return c;}) */ this.props.children}
                 <button className={'btn glyphicon pull-right ' + style } aria-hidden='true'
