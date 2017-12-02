@@ -13,6 +13,12 @@ class ComponentList extends React.Component {
 
     }
 
+    componentDidUpdate(prevProps, prevState, prevContext) {
+        let onUpdate = this.props.onUpdate;
+        if(onUpdate && typeof onUpdate === 'function')
+            onUpdate();
+    }
+
     addComponent(component) {
         this.setState({ list: [...this.state.list, component] });
     }
@@ -21,7 +27,7 @@ class ComponentList extends React.Component {
         let compList = this.state.list.map(function(component, index) {
             return <div key={index}>{component}</div>;
         });
-        return (<div>{compList}</div>);
+        return (<div className={this.props.className} id={this.props.id}>{compList}</div>);
     }
 }
 
