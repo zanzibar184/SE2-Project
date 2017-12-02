@@ -39,7 +39,7 @@ class ChatBot extends React.Component {
         let input = document.getElementById('cbInput');
 
         // aggiunto da Vale: prende l'istanza del componente che poi passeremo come parametro a YoutubeSearch tramite ref
-        let videoRef = (instance)=>{instance.componentList = this.componentList};
+        let videoRef = (instance)=>{instance.multimediaContents = this.multimediaContents};
 
         // Controllo che il client sia inizializzato, e che l'input utente esista e non sia vuoto
         if(!this.client || !input || !input.value) return;
@@ -61,7 +61,7 @@ class ChatBot extends React.Component {
                         </div>
                     </div>
                 </div>;
-            this.componentList.addComponent(video);
+            this.multimediaContents.addComponent(video);
             return;
         }
 
@@ -74,9 +74,9 @@ class ChatBot extends React.Component {
                 // ... riporto nella console del browser il JSON di risposta
                 console.log(response);/* do something */
 
-                // 'this.componentList' è l'istanza ad un componente 'ComponentList' che memorizza la lista
+                // 'this.multimediaContents' è l'istanza ad un componente 'ComponentList' che memorizza la lista
                 // dei contenuti multimediali da mostrare sullo schermo (lato sinistro)
-                if(this.componentList) {
+                if(this.multimediaContents) {
 
                     // Se nel JSON di risposta c'è un'azione collegata alla ricerca video..
                     if(response.result.action === "RicercaVideoYT.video-cerca" || response.result.action === "videoDiretto") {
@@ -84,7 +84,7 @@ class ChatBot extends React.Component {
                         let searchText = response.result.parameters.cercaVideo;
                         // e aggiungo i video trovati alla lista dei contenuti multimediali
                         if (searchText)
-                            this.componentList.addComponent(<YoutubeSearch ref={videoRef} search={searchText}/>); /*TODO: gestione errore*/
+                            this.multimediaContents.addComponent(<YoutubeSearch ref={videoRef} search={searchText}/>); /*TODO: gestione errore*/
                     } // Se invece c'è un'azione collegata alla ricerca di una canzione
                     else if(response.result.action === "cercaCanzone.nomeCanzone") {
                             // Ottiene il nome dell'artista e/o della canzone
@@ -92,13 +92,13 @@ class ChatBot extends React.Component {
                             let searchCanzone = response.result.parameters.cercaCanzone;
                             // Fa una ricerca in base alla presenza di questi parametri
                             if (searchArtista && !searchCanzone)
-                                this.componentList.addComponent(<YoutubeSearch
+                                this.multimediaContents.addComponent(<YoutubeSearch
                                     ref={videoRef}
                                     search={"canzone di " + searchArtista}/>);
                             else if (!searchArtista && searchCanzone)
-                                this.componentList.addComponent(<YoutubeSearch ref={videoRef} search={"canzone " + searchCanzone}/>);
+                                this.multimediaContents.addComponent(<YoutubeSearch ref={videoRef} search={"canzone " + searchCanzone}/>);
                             else if (searchArtista && searchCanzone)
-                                this.componentList.addComponent(<YoutubeSearch
+                                this.multimediaContents.addComponent(<YoutubeSearch
                                     ref={videoRef}
                                     search={"canzone " + searchCanzone + " di " + searchArtista}/>);
                             /*TODO: gestione errore*/
