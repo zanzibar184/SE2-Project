@@ -54,7 +54,7 @@ class DatabaseAPI {
     // rimuove un elemento esistente
     removeSharedContent(email_r, id_patient_r, date_r) {
 
-        if(!email_r || !id_patient_r || !date_r)
+        if(!id_patient_r || !date_r)
             return false;
 
         let database = null;
@@ -66,13 +66,17 @@ class DatabaseAPI {
                 return db.collection('shared_content');
             })
             .then((table) => {
-                return table.remove(
-                    {email: email_r,
-                    id_patient: id_patient_r,
-                    date: date_r});
+                return (email_r) ?
+                      table.remove(
+                        { email: email_r,
+                        id_patient: id_patient_r,
+                        date: date_r})
+                    : table.remove(
+                        { id_patient: id_patient_r,
+                          date: date_r})
             })
             .then((result)=> {
-                console.log(result);
+                //console.log(result);
             })
             .catch((err) => {
                 retValue = false;
@@ -113,8 +117,12 @@ getPatientContents(email_f,id_patient_f, res) {
                return cursor.toArray();
             })
             .then((array) => {
-                console.log(array);
-                res.send(array);
+                //console.log(array);
+                let results = [];
+                array.forEach( (element) => {
+                    results.push({content: element.content, content_id: element.content_id, date: element.date});
+                });
+                res.send(results);
             })
             .catch((err) => {
                 retValue = false;
