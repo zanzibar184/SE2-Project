@@ -1,0 +1,51 @@
+.divKioku {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width:450px;
+    height:400px;
+}
+
+.kiokuAnimation {
+    -webkit-animation: fadein 7s;
+    -moz-animation: fadein 7s;
+    -ms-animation: fadein 7s;
+    -o-animation: fadein 7s;
+    animation: fadein 7s;
+}
+
+.rowKiokuStyle {
+    height: 100vh;
+    background: -webkit-linear-gradient(#ebeec2, #ffdbd2);
+    background: -o-linear-gradient(#ebeec2, #ffdbd2);
+    background: -moz-linear-gradient(#ebeec2, #ffdbd2);
+    background: linear-gradient(#ebeec2, #ffdbd2);
+
+}
+
+@keyframes fadein {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@-moz-keyframes fadein {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@-webkit-keyframes fadein {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@-ms-keyframes fadein {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@-o-keyframes fadein {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}

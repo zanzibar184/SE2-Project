@@ -1,14 +1,31 @@
 import React from 'react';
-import YoutubePlayer from 'react-youtube-player';
 
 import ComponentList from './ComponentList';
 import session from '../SessionManager';
-import Shareable from "./Shareable";
+
+import openSocket from 'socket.io-client';
+import YoutubeSearch from "./YoutubeSearch";
 
 class MultimediaContents extends React.Component {
 
     constructor(props) {
         super(props);
+
+        if(session.patientID) {
+            this.socket = openSocket(':3002/');
+            this.socket.emit('subscribeToPatient', session.patientID);
+
+            this.socket.on('add', (element) => {
+                // Controlla che l'elelemento non sia già stato aggiunto ( il client che ha condiviso un elemento lo ha già mostrato in lista )
+                if(this.componentList && this.componentList.state.list.some( (e) => e.key === element.content_id+'.'+element.content ) )
+                    return;
+                this.addShareableContent(element.content_id, element.content, element.date);
+            });
+
+            this.socket.on('rem', (element) => {
+               this.remShareableContent(element.date);
+            });
+        }
 
         this.addComponent = this.addComponent.bind(this);
 
@@ -19,29 +36,25 @@ class MultimediaContents extends React.Component {
         session.getPatientContents((results)=> {
             console.log(results);
             results.forEach((element) => {
-
-                switch(element.content_id) {
-                    case 'youtube':
-                        this.addComponent(
-                            <div className="row thumbnail flex-row Container-multimedia Second-media-color center-block" style={{marginLeft:'5px', marginRight:'5px', marginBottom:'5px', height:'280px'}}>
-                                <div className="col-lg-12 center-block">
-                                    <div className="Youtube-dim">
-                                        <Shareable type='youtube' content={element.content} date={element.date}>
-                                            <YoutubePlayer videoId={element.content}/>
-                                        </Shareable>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                        break;
-                }
-
+                this.addShareableContent(element.content_id, element.content, element.date);
             })
         });
     }
 
-    addComponent(component) {
-        this.componentList.addComponent(component);
+    addShareableContent(content_id, content, date) {
+        switch(content_id) {
+            case 'youtube':
+                this.addComponent( YoutubeSearch.createYoutubeElement(content, date), date );
+                break;
+        }
+    }
+
+    remShareableContent(date) {
+        this.componentList.remComponent(date);
+    }
+
+    addComponent(component, key) {
+        this.componentList.addComponent(component, key);
     }
 
     static onListUpdated() {

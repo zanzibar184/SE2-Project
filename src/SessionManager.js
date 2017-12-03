@@ -36,7 +36,7 @@ class SessionManager {
 
         // Attualmente, per semplicità, gestiamo un solo paziente per operatore ma
         // è possibile avere più pazienti assegnando valori diversi a questa variabile
-        this.patientID = 'p0'; // 'pippo';
+        this.patientID = null; // 'p0';
 
         this.onLoginEventCallbacks = [];
 
@@ -45,6 +45,7 @@ class SessionManager {
         this.logout = this.logout.bind(this);
         this.getLoggedUser = this.getLoggedUser.bind(this);
         this.getPatientID = this.getPatientID.bind(this);
+        this.setPatientID = this.setPatientID.bind(this);
         this.isLogged = this.isLogged.bind(this);
         this.getPatientContents = this.getPatientContents.bind(this);
         this.addSharedContent = this.addSharedContent.bind(this);
@@ -79,6 +80,8 @@ class SessionManager {
     getLoggedUser() { return this.loginUserProfile; }
 
     getPatientID() { return this.patientID; }
+
+    setPatientID(patientId) { this.patientID = patientId; }
 
     isLogged() { return this.loginUserProfile && this.patientID; }
 
