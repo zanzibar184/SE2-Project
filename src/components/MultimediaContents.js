@@ -1,9 +1,7 @@
 import React from 'react';
-import YoutubePlayer from 'react-youtube-player';
 
 import ComponentList from './ComponentList';
 import session from '../SessionManager';
-import Shareable from "./Shareable";
 
 import openSocket from 'socket.io-client';
 import YoutubeSearch from "./YoutubeSearch";
