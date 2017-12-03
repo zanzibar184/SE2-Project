@@ -28,7 +28,7 @@ class ChatBot extends React.Component {
     // Chiamato da React quando il componente è montato per la prima volta
     componentDidMount() {
         if(!session.isLogged()) return;
-        let message = 'Benvenuto/a ' + session.getLoggedUser().getName() + '! Cosa posso fare per te?';
+        let message = 'Benvenuto/a ' + session.getLoggedUser().getName() + '! Per iniziare scrivi inizio';
         this.messageList.addComponent(<a className='list-group-item Msj_server'><b><i>{message}</i></b></a>);
     }
 
@@ -164,7 +164,7 @@ class ChatBot extends React.Component {
                             }
                         }else if(response.result.action === "alberoGenealogico")
                         {
-                            messaggio = <p>Potresti iniziare chiedendogli di suo/a marito/moglie per poi parlare dei figli e a loro volta se si sono sposati e se hanno avuto figli. <br/> Per ogni persona si può chiedere se ha qualche aneddoto o gli/le piace/piaceva fare insieme.</p>
+                            messaggio = <p>Potresti iniziare chiedendogli di suo/a marito/moglie per poi parlare dei figli e a loro volta se si sono sposati e se hanno avuto figli. <br/> Per ogni persona si può chiedere se ha qualche aneddoto o cosa gli/le piace/piaceva fare insieme.</p>
                         }
 
                         if(item.speech)// se non vuoto mostro il testo di quel messaggio aggiungendolo a messageList
