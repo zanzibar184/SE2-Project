@@ -25,7 +25,7 @@ class ChatBot extends React.Component {
 
     }
 
-    // Chiamato da React quando il componente è montato per la prima volta
+    // Chiamato da React quando il componente è montato per la prima volta, da il benvenuto
     componentDidMount() {
         if(!session.isLogged()) return;
         let message = 'Benvenuto/a ' + session.getLoggedUser().getName() + '! Per iniziare scrivi inizio';
