@@ -6,13 +6,18 @@ const app = express();
 const YoutubeAPI= require('./YoutubeAPI');
 const youtube = new YoutubeAPI();
 
-
-
 const DatabaseAPI = require('./DatabaseAPI');
 const db = new DatabaseAPI();
 
 
 // Setup del server minimale, andrà ampliato per una maggiore robustezza
+
+//----------------------------------------------------------------------------------------------
+
+const io = require('./SocketIO');
+io.start();
+
+//----------------------------------------------------------------------------------------------
 
 // Setup logger
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));
@@ -38,16 +43,26 @@ function handleAPIDatabase(req,res) {
                 req.query.content_id,
                 req.query.content
             );
-            res.status(result?200:404).send(result);
-            return result;
+            if(result) {
+                io.notify(req.query.id_patient,'add',{date: req.query.date, content_id: req.query.content_id, content: req.query.content});
+                res.status(200).send(true);
+                return true;
+            }
+            res.status(404).send(false);
+            return false;
         case 'rem':
             result = db.removeSharedContent(
                 req.query.email,
                 req.query.id_patient,
                 req.query.date
             );
-            res.status(result?200:404).send(result);
-            return result;
+            if(result) {
+                io.notify(req.query.id_patient,'rem',{date: req.query.date});
+                res.status(200).send(true);
+                return true;
+            }
+            res.status(404).send(false);
+            return false;
         case 'get':
             return db.getPatientContents(req.query.email, req.query.id_patient, res);
         case 'print':
