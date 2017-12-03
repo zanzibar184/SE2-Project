@@ -6,6 +6,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './style.css';
 
 import App from './components/App/App';
+import Home from './components/Home/Home';
 import NotFound from './components/NotFound'
 
 import Login from './components/Login/Login';
