@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 import YoutubePlayer from 'react-youtube-player';
-import Shareable from "./Shareable";
+import Shareable from './Shareable';
 
 class YoutubeSearch extends React.Component {
     constructor(props) {
@@ -26,19 +26,21 @@ class YoutubeSearch extends React.Component {
             });
     }
 
-    displaySelectedVideo(id){
-        this.multimediaContents.addComponent(
-            <div className="row thumbnail flex-row Container-multimedia Second-media-color center-block" style={{marginLeft:'5px', marginRight:'5px', marginBottom:'5px', height:'280px'}}>
-                <div className="col-lg-12 center-block">
-                    <div className="Youtube-dim">
-                        <Shareable type='youtube' content={id}>
-                            <YoutubePlayer videoId={id}/>
-                        </Shareable>
+    static createYoutubeElement(videoId, date) {
+        return <div className="row thumbnail flex-row Container-multimedia Second-media-color center-block" style={{marginLeft:'5px', marginRight:'5px', marginBottom:'5px', height:'280px'}}>
+                    <div className="col-lg-12 center-block">
+                        <div className="Youtube-dim">
+                            <Shareable type='youtube' content={videoId} date={date}>
+                                <YoutubePlayer videoId={videoId}/>
+                            </Shareable>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
-    };
+    }
+
+    displaySelectedVideo(videoCode){
+        this.multimediaContents.addComponent( YoutubeSearch.createYoutubeElement(videoCode, null), 'youtube.'+videoCode );
+    }
 
     render() {
         let videodisplay = this.displaySelectedVideo;
