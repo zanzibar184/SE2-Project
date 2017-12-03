@@ -59,7 +59,7 @@ class YoutubeSearch extends React.Component {
                                     <span style={{display: 'inline-block', verticalAlign: 'middle', lineHeight: 'normal'}}><b>{title}</b></span>
                                 </div>
 
-                                <img style={{marginTop:'5px'}} src={th} width='160px' height='120px' className='Youtube-preview' alt="thumbnail_image" onClick={() => videodisplay(id)} /> { /*Dentro className dovremo anche metterci center-block se vogliamo che l'immagine sia centrata*/ }
+                                <img style={{marginTop:'10px'}} src={th} width='160px' height='120px' className='Youtube-preview img-responsive' alt="thumbnail_image" onClick={() => videodisplay(id)} /> { /*Dentro className dovremo anche metterci center-block se vogliamo che l'immagine sia centrata*/ }
 
                                 <div style={{height:'85px', lineHeight: '85px', textAlign: 'center'}}>
                                     <span style={{display: 'inline-block', verticalAlign: 'middle', lineHeight: 'normal'}}>{desc}</span>
