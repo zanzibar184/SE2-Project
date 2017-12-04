@@ -6,10 +6,31 @@ import session from '../SessionManager';
 import openSocket from 'socket.io-client';
 import YoutubeSearch from "./YoutubeSearch";
 
+// -----------------------------------------------------------------------------------------------------------------
+
+const introMessage = <div className="row flex-row backgroundStyle" style={{height:0}}>
+                        <div className="col-md-12 divMessageIntro ">
+                            <h2 style={{textAlign: 'center', color: '#76767c'}}>Benvenuto in Kioku</h2>
+                            <h5 style={{textAlign: 'center', color: '#56565c', marginTop: '20px'}}>
+                                Con l'ID paziente che hai inserito qui puoi vedere i contenuti multimediali che hai condiviso
+                                con l'interlocutore.
+                                <br/>
+                                Se fai il login, puoi accedere al chatbot che verrà mostrato qui a destra, i contenuti
+                                multimediali verrano spostati a sinistra
+                            </h5>
+                        </div>
+                    </div>;
+
+// -----------------------------------------------------------------------------------------------------------------
+
 class MultimediaContents extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            intro: true
+        };
 
         if(session.patientID) {
             this.socket = openSocket(':3002/');
@@ -57,6 +78,7 @@ class MultimediaContents extends React.Component {
     }
 
     addComponent(component, key) {
+        if(this.state.intro) this.setState({intro:false});
         this.componentList.addComponent(component, key);
     }
 
@@ -67,9 +89,11 @@ class MultimediaContents extends React.Component {
     }
 
     render() {
-        return  <ComponentList id='multimediaContents' className='Scrollbar Vertical-fit' onUpdate={MultimediaContents.onListUpdated} ref={(instance) => {
-                    this.componentList = instance;
-                }}/>
+        return  <div>
+                    <ComponentList id='multimediaContents' className='Scrollbar Vertical-fit' onUpdate={MultimediaContents.onListUpdated}
+                                   ref={(instance) => {this.componentList = instance;}}/>
+                    {(this.state.intro)?introMessage:null}
+                </div>
     }
 
 }

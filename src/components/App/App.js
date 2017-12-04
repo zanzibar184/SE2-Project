@@ -23,23 +23,7 @@ class App extends React.Component {
 
     render() {
 
-        let message;
-
         let view;
-
-        message = <div className="row flex-row backgroundStyle">
-                        <div className="col-md-12 divMessageIntro ">
-                            <h2 style={{textAlign: 'center', color: '#76767c'}}>Benvenuto in Kioku</h2>
-                            <h5 style={{textAlign: 'center', color: '#56565c', marginTop: '20px'}}>
-                                Con l'ID paziente che hai inserito qui puoi vedere i contenuti multimediali che hai condiviso
-                                con l'interlocutore.
-                                <br/>
-                                Se fai il login, puoi accedere al chatbot che verrà mostrato qui a destra, i contenuti
-                                multimediali verrano spostati a sinistra
-                            </h5>
-                        </div>
-                    </div>;
-
 
         if (this.state.enabled) {
             view = <div className="App">
