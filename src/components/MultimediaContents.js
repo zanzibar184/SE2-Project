@@ -46,6 +46,9 @@ class MultimediaContents extends React.Component {
             case 'youtube':
                 this.addComponent( YoutubeSearch.createYoutubeElement(content, date), date );
                 break;
+            default:
+                console.log("addShareableComponent > unknown content_id: " + content_id);
+                break;
         }
     }
 
