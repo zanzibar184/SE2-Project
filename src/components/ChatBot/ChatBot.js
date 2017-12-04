@@ -54,7 +54,7 @@ class ChatBot extends React.Component {
 
         // Easter egg
         if(input.value==='faaantastico') {
-            let video = <div className="row thumbnail flex-row Container-multimedia Second-media-color center-block" style={{maxWidth:'823px', marginBottom:'5px'}}>
+            let video = <div className="row thumbnail flex-row Second-media-color center-block" style={{maxWidth:'823px', marginBottom:'5px'}}>
                     <div className="col-lg-12 center-block">
                         <div className="Youtube-dim">
                             <YoutubePlayer videoId='nMZJKGyu-Kk' />
