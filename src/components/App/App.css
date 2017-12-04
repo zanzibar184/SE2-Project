@@ -6,6 +6,30 @@
     animation: App-logo-spin infinite 20s linear;
 }
 
+.backgroundStyle {
+    height: 100vh;
+    background: -webkit-linear-gradient(#ebeec2, #ffdbd2);
+    background: -o-linear-gradient(#ebeec2, #ffdbd2);
+    background: -moz-linear-gradient(#ebeec2, #ffdbd2);
+    background: linear-gradient(#ebeec2, #ffdbd2);
+}
+
+.divMessageIntro {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    height: auto;
+    max-width: 450px;
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 2px 2px 8px #888888;
+    background: -webkit-linear-gradient(#e2dbda, #f4e1e0);
+    background: -o-linear-gradient(#e2dbda, #f4e1e0);
+    background: -moz-linear-gradient(#e2dbda, #f4e1e0);
+    background: linear-gradient(#e2dbda, #f4e1e0);
+}
+
 .First-media-color {
     background-color: #e7dbce;
 }

@@ -23,11 +23,27 @@ class App extends React.Component {
 
     render() {
 
+        let message;
+
         let view;
 
-        if(this.state.enabled){
+        message = <div className="row flex-row backgroundStyle">
+                        <div className="col-md-12 divMessageIntro ">
+                            <h2 style={{textAlign: 'center', color: '#76767c'}}>Benvenuto in Kioku</h2>
+                            <h5 style={{textAlign: 'center', color: '#56565c', marginTop: '20px'}}>
+                                Con l'ID paziente che hai inserito qui puoi vedere i contenuti multimediali che hai condiviso
+                                con l'anziano.
+                                <br/>
+                                Se fai il login, puoi accedere al chatbot che verrà mostrato qui a destra, i contenuti
+                                multimediali verrano spostati a sinistra
+                            </h5>
+                        </div>
+                    </div>;
+
+
+        if (this.state.enabled) {
             view = <div className="App">
-                        <div className="row">
+                        <div className="row backgroundStyle">
                             <div className="col-md-8 Vertical-fit" style={{padding: '0'}}>
                                 <MultimediaContents ref={(instance) => {
                                     this.multimediaContents = instance;
@@ -36,7 +52,7 @@ class App extends React.Component {
                             <div className="col-md-4 Chat-col-background Vertical-fit">
                                 <div align="center" style={{paddingTop: '20px'}}>
                                     <ChatBot ref={(instance) => {
-                                        if(instance)
+                                        if (instance)
                                             instance.multimediaContents = this.multimediaContents;
                                     }}/>
                                 </div>
@@ -45,7 +61,7 @@ class App extends React.Component {
                     </div>;
         } else {
             view = <div className="App">
-                        <div className="row">
+                        <div className="row backgroundStyle">
                             <div className="col-md-12 Vertical-fit" style={{padding: '0'}}>
                                 <MultimediaContents/>
                             </div>
@@ -54,9 +70,7 @@ class App extends React.Component {
         }
 
         return view;
-
     }
-
 }
 
 export default App;
