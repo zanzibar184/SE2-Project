@@ -45,12 +45,12 @@ class YoutubeSearch extends React.Component {
     render() {
         let videodisplay = this.displaySelectedVideo;
         let videos = this.state.result.map(function(v, index) {
-            let title = v.snippet.title;
+            let title = v.title;
             if(title.length > 40) title = title.substring(0, 40) + '...';
-            let desc  = v.snippet.description;
+            let desc  = v.description;
             if(desc.length > 70)  desc  = desc.substring(0, 70) + '...';
-            let id    = v.id.videoId;
-            let th    = v.snippet.thumbnails.medium.url; // ['snippet']['thumbnails']['medium']['url'];
+            let id    = v.videoId;
+            let th    = v.thumbnail; // ['snippet']['thumbnails']['medium']['url'];
             let divStyle = "col-xs-3 " + ((index%2) ? "Second-media-color" : "First-media-color");
 
             let snippet = (
