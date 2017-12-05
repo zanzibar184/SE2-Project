@@ -36,7 +36,7 @@ class DatabaseAPI {
                 return table.insert(seedData);
             })
             .then((result)=> {
-                console.log(result);
+                //console.log(result);
             })
             .catch((err) => {
                 retValue = false;
@@ -91,12 +91,11 @@ class DatabaseAPI {
         return retValue;
     }
 
-getPatientContents(email_f,id_patient_f, res) {
+getPatientContents(email_f,id_patient_f, callback) {
 
-       if(!id_patient_f || !res) return false;
+       if(!id_patient_f || !callback) return false;
 
         let database = null;
-        let retValue = true;
         this.mongodb.MongoClient.connect(this.uri)
             .then((db) => {
                 database = db;
@@ -122,10 +121,10 @@ getPatientContents(email_f,id_patient_f, res) {
                 array.forEach( (element) => {
                     results.push({content: element.content, content_id: element.content_id, date: element.date});
                 });
-                res.send(results);
+                callback(true, results);
             })
             .catch((err) => {
-                retValue = false;
+                callback(false);
                 res.status(404).send([]);
                 console.log("Error: database.getPatientContents " + err);
             })
@@ -134,8 +133,6 @@ getPatientContents(email_f,id_patient_f, res) {
                     database.close();
                 }
             });
-
-        return retValue;
     };
 
     //----------------------------------------------------------------------------

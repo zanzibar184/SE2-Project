@@ -64,7 +64,11 @@ function handleAPIDatabase(req,res) {
             res.status(404).send(false);
             return false;
         case 'get':
-            return db.getPatientContents(req.query.email, req.query.id_patient, res);
+            db.getPatientContents(req.query.email, req.query.id_patient, (success, results) => {
+                if(success) res.send(results);
+                else res.status(404).send([]);
+            });
+            return true;
         case 'print':
             db.print();
             res.status(200).send('OK');
