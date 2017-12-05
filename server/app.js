@@ -31,46 +31,49 @@ function handleAPIDatabase(req,res) {
     // console.log('params:' + req.params.id);
     // console.log('query:' + req.query.a);
 
-    let result;
-
     switch (req.query.action) {
 
         case 'add':
-            result = db.addSharedContent(
+            return db.addSharedContent(
                 req.query.email,
                 req.query.id_patient,
                 req.query.date,
                 req.query.content_id,
-                req.query.content
+                req.query.content,
+                (result) => {
+                    if(result) {
+                        io.notify(req.query.id_patient,'add',{date: req.query.date, content_id: req.query.content_id, content: req.query.content});
+                        res.status(200).send(true);
+                        return true;
+                    }
+                    res.status(404).send(false);
+                }
             );
-            if(result) {
-                io.notify(req.query.id_patient,'add',{date: req.query.date, content_id: req.query.content_id, content: req.query.content});
-                res.status(200).send(true);
-                return true;
-            }
-            res.status(404).send(false);
-            return false;
         case 'rem':
-            result = db.removeSharedContent(
+            return db.removeSharedContent(
                 req.query.email,
                 req.query.id_patient,
-                req.query.date
+                req.query.date,
+                (result) => {
+                    if(result) {
+                        io.notify(req.query.id_patient,'rem',{date: req.query.date});
+                        res.status(200).send(true);
+                        return true;
+                    }
+                    res.status(404).send(false);
+                }
             );
-            if(result) {
-                io.notify(req.query.id_patient,'rem',{date: req.query.date});
-                res.status(200).send(true);
-                return true;
-            }
-            res.status(404).send(false);
-            return false;
         case 'get':
-            db.getPatientContents(req.query.email, req.query.id_patient, (success, results) => {
+            return db.getPatientContents(req.query.email, req.query.id_patient, (success, results) => {
                 if(success) res.send(results);
                 else res.status(404).send([]);
             });
-            return true;
         case 'print':
             db.print();
+            res.status(200).send('OK');
+            return true;
+        case 'remall':
+            db.removeAll();
             res.status(200).send('OK');
             return true;
         case 'drop':
@@ -114,7 +117,7 @@ function handleAPIRequest(req, res) {
 
 app.get('/api/:id', (req, res) => {
     if(!handleAPIRequest(req,res))
-        res.status(404).send("Chiamata API fallita");
+        res.status(404).send("Parametri errati nella chiamata API.");
 });
 
 // Always return the main index.html, so react-router render the route in the client

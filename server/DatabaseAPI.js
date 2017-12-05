@@ -8,9 +8,9 @@ class DatabaseAPI {
     }
 
     //scrive un nuovo elemento
-    addSharedContent(email, id_patient, date, content_id, content) {
+    addSharedContent(email, id_patient, date, content_id, content, callback) {
 
-        if(!email || !id_patient || !date || !content_id || !content)
+        if(!email || !id_patient || !date || !content_id || !content || !callback)
             return false;
 
         let seedData = [
@@ -25,7 +25,6 @@ class DatabaseAPI {
         ];
 
         let database = null;
-        let retValue = true;
 
         this.mongodb.MongoClient.connect(this.uri)
             .then((db) => {
@@ -36,10 +35,11 @@ class DatabaseAPI {
                 return table.insert(seedData);
             })
             .then((result)=> {
+                callback(true);
                 //console.log(result);
             })
             .catch((err) => {
-                retValue = false;
+                callback(false);
                 console.log("Error: database.addSharedContent > " + err);
             })
             .then(() => {
@@ -48,17 +48,45 @@ class DatabaseAPI {
                 }
             });
 
-        return retValue;
+        return true;
+     }
+
+     removeAll() {
+
+         let database = null;
+
+
+         this.mongodb.MongoClient.connect(this.uri)
+             .then((db) => {
+                 database = db;
+                 return db.collection('shared_content');
+             })
+             .then((table) => {
+                 return table.deleteMany({});
+             })
+             .then((doc, result)=> {
+                 console.log(result);
+             })
+             .catch((err) => {
+                 console.log("Error: database.removeAll > " + err);
+             })
+             .then(() => {
+                 if(database) {
+                     database.close();
+                 }
+             });
+
+         return true;
      }
 
     // rimuove un elemento esistente
-    removeSharedContent(email_r, id_patient_r, date_r) {
+    removeSharedContent(email_r, id_patient_r, date_r, callback) {
 
-        if(!id_patient_r || !date_r)
+        if(!id_patient_r || !date_r || !callback)
             return false;
 
         let database = null;
-        let retValue = true;
+
 
         this.mongodb.MongoClient.connect(this.uri)
             .then((db) => {
@@ -70,17 +98,18 @@ class DatabaseAPI {
                       table.remove(
                         { email: email_r,
                         id_patient: id_patient_r,
-                        date: date_r})
+                        date: date_r}, {justOne: false } )
                     : table.remove(
                         { id_patient: id_patient_r,
-                          date: date_r})
+                          date: date_r}, {justOne: false })
             })
             .then((result)=> {
+                callback(true);
                 //console.log(result);
             })
             .catch((err) => {
-                retValue = false;
                 console.log("Error: database.removeSharedContent > " + err);
+                callback(false);
             })
             .then(() => {
                 if(database) {
@@ -88,10 +117,10 @@ class DatabaseAPI {
                 }
             });
 
-        return retValue;
+        return true;
     }
 
-getPatientContents(email_f,id_patient_f, callback) {
+    getPatientContents(email_f,id_patient_f, callback) {
 
        if(!id_patient_f || !callback) return false;
 
@@ -124,14 +153,16 @@ getPatientContents(email_f,id_patient_f, callback) {
                 callback(true, results);
             })
             .catch((err) => {
-                callback(false);
                 console.log("Error: database.getPatientContents " + err);
+                callback(false);
             })
             .then(() => {
                 if(database) {
                     database.close();
                 }
             });
+
+        return true;
     };
 
     //----------------------------------------------------------------------------
