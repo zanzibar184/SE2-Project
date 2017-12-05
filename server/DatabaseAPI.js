@@ -125,7 +125,6 @@ getPatientContents(email_f,id_patient_f, callback) {
             })
             .catch((err) => {
                 callback(false);
-                res.status(404).send([]);
                 console.log("Error: database.getPatientContents " + err);
             })
             .then(() => {
