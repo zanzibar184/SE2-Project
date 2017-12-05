@@ -6,9 +6,28 @@
     animation: App-logo-spin infinite 20s linear;
 }
 
-.Container-multimedia {
-    padding-bottom: 20px;
-    padding-top: 20px;
+.backgroundStyle {
+    height: 100vh;
+    background: -webkit-linear-gradient(#ebeec2, #ffdbd2);
+    background: -o-linear-gradient(#ebeec2, #ffdbd2);
+    background: -moz-linear-gradient(#ebeec2, #ffdbd2);
+    background: linear-gradient(#ebeec2, #ffdbd2);
+}
+
+.divMessageIntro {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    height: auto;
+    max-width: 450px;
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 2px 2px 8px #888888;
+    background: -webkit-linear-gradient(#e2dbda, #f4e1e0);
+    background: -o-linear-gradient(#e2dbda, #f4e1e0);
+    background: -moz-linear-gradient(#e2dbda, #f4e1e0);
+    background: linear-gradient(#e2dbda, #f4e1e0);
 }
 
 .First-media-color {
@@ -35,11 +54,13 @@
 }
 
 .Youtube-dim {
-    border:8px solid #000000;
-    width: 426px; /*426 256*/
-    height: 240px; /*240 144*/
-    max-width: 426px; /*426 256*/
-    max-height: 240px;
+    border: 8px solid #000000;
+    width: 426px;
+    height: 240px;
+    max-width: 100%;
+    display: block;
+    margin-top: 20px;
+    margin-bottom:20px;
 }
 
 

@@ -40,7 +40,7 @@ class ComponentList extends React.Component {
         let compList = this.state.list.map(function(component, index) {
             return <div key={(component.key)?component.key:index}>{component.element}</div>;
         });
-        return (<div className={this.props.className} id={this.props.id}>{compList}</div>);
+        return (<div className={this.props.className} id={this.props.id}>{compList}{this.props.children}</div>);
     }
 }
 

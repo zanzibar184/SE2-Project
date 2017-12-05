@@ -27,7 +27,7 @@ class YoutubeSearch extends React.Component {
     }
 
     static createYoutubeElement(videoId, date) {
-        return <div className="row thumbnail flex-row Container-multimedia Second-media-color center-block" style={{marginLeft:'5px', marginRight:'5px', marginBottom:'5px', height:'280px'}}>
+        return <div className="row thumbnail flex-row Second-media-color center-block" style={{marginLeft:'5px', marginRight:'5px', marginBottom:'5px', height:'280px'}}>
                     <div className="col-lg-12 center-block">
                         <div className="Youtube-dim">
                             <Shareable type='youtube' content={videoId} date={date}>
@@ -45,24 +45,26 @@ class YoutubeSearch extends React.Component {
     render() {
         let videodisplay = this.displaySelectedVideo;
         let videos = this.state.result.map(function(v, index) {
-            let title = v.snippet.title;
+            let title = v.title;
             if(title.length > 40) title = title.substring(0, 40) + '...';
-            let desc  = v.snippet.description;
+            let desc  = v.description;
             if(desc.length > 70)  desc  = desc.substring(0, 70) + '...';
-            let id    = v.id.videoId;
-            let th    = v.snippet.thumbnails.medium.url; // ['snippet']['thumbnails']['medium']['url'];
+            let id    = v.videoId;
+            let th    = v.thumbnail; // ['snippet']['thumbnails']['medium']['url'];
             let divStyle = "col-xs-3 " + ((index%2) ? "Second-media-color" : "First-media-color");
 
             let snippet = (
-                            <div className={divStyle} style={{height:'100%', margin:'0 !important'}} key={index}>
-                                <div style={{height:'45px', lineHeight: '45px', textAlign: 'center'}}>
-                                    <span style={{display: 'inline-block', verticalAlign: 'middle', lineHeight: 'normal'}}><b>{title}</b></span>
-                                </div>
+                            <div className={divStyle} key={index}>
+                                <div style={{padding:'2px'}}>
+                                    <div style={{maxHeight:'75px', lineHeight: '75px', textAlign: 'center'}}>
+                                        <span style={{display: 'inline-block', verticalAlign: 'middle', lineHeight: 'normal', marginTop:'5px'}}><b>{title}</b></span>
+                                    </div>
 
-                                <img style={{marginTop:'5px'}} src={th} width='160px' height='120px' className='Youtube-preview' alt="thumbnail_image" onClick={() => videodisplay(id)} /> { /*Dentro className dovremo anche metterci center-block se vogliamo che l'immagine sia centrata*/ }
+                                    <img style={{marginTop:'10px', display:'block', maxWidth:'100%'}} src={th} className='Youtube-preview' alt="thumbnail_image" onClick={() => videodisplay(id)} /> { /*Dentro className dovremo anche metterci center-block se vogliamo che l'immagine sia centrata*/ }
 
-                                <div style={{height:'85px', lineHeight: '85px', textAlign: 'center'}}>
-                                    <span style={{display: 'inline-block', verticalAlign: 'middle', lineHeight: 'normal'}}>{desc}</span>
+                                    <div style={{height:'85px', lineHeight: '85px', textAlign: 'center', maxWidth:'100%'}}>
+                                        <span style={{display: 'inline-block', verticalAlign: 'middle', lineHeight: 'normal'}}>{desc}</span>
+                                    </div>
                                 </div>
                             </div>
             );
@@ -70,8 +72,8 @@ class YoutubeSearch extends React.Component {
             return snippet;
         });
 
-        return <div className="row thumbnail flex-row center-block" style={{display:'inline-flex', height:'270px', marginLeft:'5px', marginRight:'5px', marginBottom:'0'}}>
-                        {videos}
+        return <div className="row flex-row center-block" style={{display:'inline-flex', height:'270px', marginLeft:'5px', marginRight:'5px', marginBottom:'0'}}>
+                    {videos}
                 </div>;
     }
 }

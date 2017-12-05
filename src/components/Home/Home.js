@@ -32,12 +32,14 @@ class Home extends React.Component {
 
     render() {
         return (this.state.enabled) ?
-            (    <div className="row rowKiokuStyle">
+            (    <div className="row flex-row rowKiokuStyle">
                     <div className="col-md-12 divKioku kiokuAnimation" >
                         <h2 style={{textAlign:'center', color:'#76767c'}}>Benvenuto in Kioku</h2>
-                        <img className="App-logo center-block" src={kioku_logo} alt="Kioku_logo" style={{marginTop:'20px'}}/>
-                        <div className="input-group" style={{marginTop:'30px'}}>
-                            <input id='pIDInput' type="text" className="form-control" placeholder="Inserisci ID paziente..." style={{boxShadow: '2px 2px 8px #888888'}} onKeyDown={(event)=>{if(event.keyCode === 13) this.getPatientID()}}/>
+                        <div className="center-block" style={{marginTop:'20px', maxWidth:'256px', maxHeight:'256px'}}>
+                            <img className="App-logo" src={kioku_logo} alt="Kioku_logo" style={{width:'100%'}}/>
+                        </div>
+                        <div className="input-group" style={{marginTop:'30px', minWidth:'200px'}}>
+                            <input id='pIDInput' type="text" className="form-control center-block" placeholder="Inserisci ID paziente..." style={{boxShadow: '2px 2px 8px #888888'}} onKeyDown={(event)=>{if(event.keyCode === 13) this.getPatientID()}}/>
                             <div className="input-group-btn">
                                 <button className="btn btn-primary" onClick={this.getPatientID}>
                                     <i className="glyphicon glyphicon-chevron-right"/>

@@ -25,9 +25,9 @@ class App extends React.Component {
 
         let view;
 
-        if(this.state.enabled){
+        if (this.state.enabled) {
             view = <div className="App">
-                        <div className="row">
+                        <div className="row backgroundStyle">
                             <div className="col-md-8 Vertical-fit" style={{padding: '0'}}>
                                 <MultimediaContents ref={(instance) => {
                                     this.multimediaContents = instance;
@@ -36,7 +36,7 @@ class App extends React.Component {
                             <div className="col-md-4 Chat-col-background Vertical-fit">
                                 <div align="center" style={{paddingTop: '20px'}}>
                                     <ChatBot ref={(instance) => {
-                                        if(instance)
+                                        if (instance)
                                             instance.multimediaContents = this.multimediaContents;
                                     }}/>
                                 </div>
@@ -45,7 +45,7 @@ class App extends React.Component {
                     </div>;
         } else {
             view = <div className="App">
-                        <div className="row">
+                        <div className="row backgroundStyle">
                             <div className="col-md-12 Vertical-fit" style={{padding: '0'}}>
                                 <MultimediaContents/>
                             </div>
@@ -54,9 +54,7 @@ class App extends React.Component {
         }
 
         return view;
-
     }
-
 }
 
 export default App;
