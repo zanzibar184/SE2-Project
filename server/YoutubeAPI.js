@@ -11,13 +11,20 @@ class YoutubeAPI {
             type: 'video',
             q: searchQuery,
             maxResults: 4
-        }
+        };
         this.client.search(params, function (err, data) {
-            callback(data['items']);
-            //callback("Hello world!");
-            //var a = data['items'][0];
-            //console.log(a['id']['videoId']);
-            //console.log(a['snippet']['title']);
+            let results = [];
+            if(data && data.items) {
+                data.items.forEach((r) => {
+                    results.push(
+                        {   title: r.snippet.title,
+                            description: r.snippet.description,
+                            videoId: r.id.videoId,
+                            thumbnail: r.snippet.thumbnails.medium.url
+                        });
+                });
+            }
+            callback(results);
         })
     }
 

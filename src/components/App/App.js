@@ -1,80 +1,60 @@
 import React from "react";
 
-// import YoutubePlayer from 'react-youtube-player';
-
-import ComponentList from '../ComponentList';
 import ChatBot from '../ChatBot/ChatBot';
+import session from '../../SessionManager';
 
 import "./App.css";
+import MultimediaContents from "../MultimediaContents";
 
-const App = () => (
-    <div className="App">
-        <div className="row">
-            <div className="col-md-8 Scrollbar Vertical-fit" >
+// path="/:myvalue" -> this.props.match.params.myvalue
 
-                <ComponentList ref={(instance)=>{this.componentList = instance;}} />
+class App extends React.Component {
 
-                {/*
-                <div className="row thumbnail flex-row Container-multimedia First-media-color">
-                    <YoutubeSearch search="reminiscence therapy"/>
-                </div>
+    constructor(props){
+        super(props);
+        this.state = {
+            enabled: session.isLogged()
+        };
 
-                <div className="row thumbnail flex-row Container-multimedia First-media-color">
-                    <YoutubeSearch search="memory loss"/>
-                </div>
-                */}
-                {/*
-                <div className="row thumbnail flex-row Container-multimedia First-media-color">
-                    <div className="col-lg-8">
-                        <div className="Youtube-dim">
-                            <YoutubePlayer videoId='hVwgHLGmqi4' />
+        session.addLoginCallback((logged)=> {
+            this.setState({enabled: logged});
+        });
+    }
+
+    render() {
+
+        let view;
+
+        if (this.state.enabled) {
+            view = <div className="App">
+                        <div className="row backgroundStyle">
+                            <div className="col-md-8 Vertical-fit" style={{padding: '0'}}>
+                                <MultimediaContents ref={(instance) => {
+                                    this.multimediaContents = instance;
+                                }}/>
+                            </div>
+                            <div className="col-md-4 Chat-col-background Vertical-fit">
+                                <div align="center" style={{paddingTop: '20px'}}>
+                                    <ChatBot ref={(instance) => {
+                                        if (instance)
+                                            instance.multimediaContents = this.multimediaContents;
+                                    }}/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="col-lg-4" />
-                </div>
-
-                <div className="row thumbnail flex-row Container-multimedia Second-media-color">
-                    <div className="col-lg-4"/>
-                    <div className="col-lg-8">
-                        <div className="Youtube-dim">
-                            <YoutubePlayer videoId='QTDmgsTLeTc' />
+                    </div>;
+        } else {
+            view = <div className="App">
+                        <div className="row backgroundStyle">
+                            <div className="col-md-12 Vertical-fit" style={{padding: '0'}}>
+                                <MultimediaContents/>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </div>;
+        }
 
-                <div className="row thumbnail flex-row Container-multimedia First-media-color">
-                    <div className="col-lg-8">
-                        <div className="Youtube-dim">
-                            <YoutubePlayer videoId='yP6wCjJab6M' />
-                        </div>
-                    </div>
-                    <div className="col-lg-4" />
-                </div>
-
-                <div className="row thumbnail flex-row Container-multimedia Second-media-color">
-                    <div className="col-lg-4"/>
-                    <div className="col-lg-8">
-                        <div className="Youtube-dim">
-                            <YoutubePlayer videoId='k1-TrAvp_xs' />
-                        </div>
-                    </div>
-                </div>
-*/}
-            </div>
-
-            <div className="col-md-4 Chat-col-background Vertical-fit" >
-                <div align="center" style={{paddingTop:'20px'}}>
-
-                    <ChatBot ref={(instance)=> { instance.componentList = this.componentList; }}/>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-);
+        return view;
+    }
+}
 
 export default App;
