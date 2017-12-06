@@ -7,7 +7,8 @@ class Shareable extends React.Component {
         super(props);
         this.state = {
             enabled: session.isLogged(),
-            sharedTime: this.props.date
+            sharedTime: this.props.date,
+            busy: false
         };
 
         session.addLoginCallback((logged)=> {
@@ -29,15 +30,19 @@ class Shareable extends React.Component {
 
     onButtonClick() {
 
+        this.setState({busy: true});
+
         if(this.isShared()) {
             session.removeSharedContent(this.state.sharedTime, (success) => {
                 if(success)
-                    this.setState({ sharedTime: null });
+                     this.setState({ sharedTime: null, busy: false });
+                else this.setState({ busy: false });
             });
         } else if(this.props.type && this.props.content) {
             session.addSharedContent(this.props.type, this.props.content, (success, time) => {
                 if(success)
-                    this.setState({ sharedTime: time });
+                     this.setState({ sharedTime: time, busy: false });
+                else this.setState({ busy: false });
             });
         }
 
@@ -64,6 +69,7 @@ class Shareable extends React.Component {
                             fontSize: '1.6em'
                         }}
                         onClick={this.onButtonClick}
+                        disabled={this.state.busy}
                 />
             </div>;
         } else {
