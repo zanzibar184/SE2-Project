@@ -46,6 +46,11 @@ class Home extends React.Component {
                                 </button>
                             </div>
                         </div>
+                        <h5 style={{textAlign:'center', color:'#7d6c6d', marginTop:'25px'}}>
+                            Inserisci un identificatore da associare al tuo paziente
+                            <br/>
+                            Grazie ad esso potrai accedere ai contenuti multimediali che hai condiviso nelle varie sessioni
+                        </h5>
                     </div>
                 </div>  )
 
