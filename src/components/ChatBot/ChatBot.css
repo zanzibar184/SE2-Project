@@ -23,7 +23,7 @@
 hr.dividerChat
 {
     margin-top: 0em;
-    margin-bottom: 0em;
+    margin-bottom: 0.5em;
     border-width: 1.5px;
     border-top-color: #28b243;
 }
@@ -31,7 +31,7 @@ hr.dividerChat
 hr.dividerUtente
 {
     margin-top: 0em;
-    margin-bottom: 0em;
+    margin-bottom: 0.5em;
     border-width: 1.5px;
     border-top-color: #f1b954;
 }
