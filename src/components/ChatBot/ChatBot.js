@@ -159,7 +159,7 @@ class ChatBot extends React.Component {
                                 messaggio = <p>Potresti chiedergli/le della sua canzone preferita e del suo cantante preferito. Potresti chiedergli/le cosa ascoltava da ragazzo e se quella canzon gli/le ricorda qualche momento o evento della sua vita.</p>
                             }else if(cercaArgomento === "Danza")
                             {
-                                messaggio = <p>Potresti cheidergli/le se gli piace/piaceva ballare e che ballo. Come ha imparato a ballare?</p>
+                                messaggio = <p>Potresti chiedergli/le se gli piace/piaceva ballare e che ballo. Come ha imparato a ballare? Con chi? Ti può raccoontare qualche aneddoto</p>
                             }else
                                 messaggio = <p>Non ho capito di che argomento hai deciso di parlare, prova a chiedere nuovamente. </p>
                         }else if(response.result.action === "alberoGenealogico")
