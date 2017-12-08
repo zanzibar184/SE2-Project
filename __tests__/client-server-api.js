@@ -132,8 +132,8 @@ describe('Client <-> Server API', () => {
     test('does not remove youtube content without email but with patientID', () => {
 
         return request(app).get('/api/db?action=rem&id_patient=jest&date=-1').then(response => {
-            expect(response.statusCode).toBe(404);
-            expect(response.text).toBe("Parametri errati nella chiamata API.");
+            expect(response.statusCode).toBe(200);
+            expect(response.text).toBeTruthy();
         });
 
     });
