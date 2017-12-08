@@ -39,7 +39,7 @@ class Home extends React.Component {
                             <img className="App-logo" src={kioku_logo} alt="Kioku_logo" style={{width:'100%'}}/>
                         </div>
                         <div className="input-group" style={{marginTop:'30px', minWidth:'200px'}}>
-                            <input id='pIDInput' type="text" className="form-control center-block" placeholder="Inserisci ID paziente..." style={{boxShadow: '2px 2px 8px #888888'}} onKeyDown={(event)=>{if(event.keyCode === 13) this.getPatientID()}}/>
+                            <input id='pIDInput' type="text" className="form-control center-block" placeholder="Inserisci ID..." style={{boxShadow: '2px 2px 8px #888888'}} onKeyDown={(event)=>{if(event.keyCode === 13) this.getPatientID()}}/>
                             <div className="input-group-btn">
                                 <button className="btn btn-primary" onClick={this.getPatientID}>
                                     <i className="glyphicon glyphicon-chevron-right"/>
@@ -47,9 +47,9 @@ class Home extends React.Component {
                             </div>
                         </div>
                         <h5 style={{textAlign:'center', color:'#7d6c6d', marginTop:'25px'}}>
-                            Inserisci un identificatore da associare al tuo paziente
+                            Per iniziare inserisci un nome con cui identificare il tuo interlocutore
                             <br/>
-                            Grazie ad esso potrai accedere ai contenuti multimediali che hai condiviso nelle varie sessioni
+                            Potrai riprendere la conversazione in futuro inserendo sempre il nome da te scelto
                         </h5>
                     </div>
                 </div>  )
