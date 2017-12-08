@@ -23,10 +23,9 @@ describe('Server DatabaseAPI', () => {
         })
     });
 
-    //Per Valentina: sostituire da qui
     test('find patient content with login email', done => {
 
-        db.getPatientContents('test@mail.com','jest', (success, results) => {
+        db.getPatientContents(dbData.email,dbData.patient_id, (success, results) => {
             expect(results.length).toBeGreaterThan(0);
             done();
         });
@@ -35,7 +34,7 @@ describe('Server DatabaseAPI', () => {
 
     test('find patient content without login email', done => {
 
-        db.getPatientContents(null, 'jest', (success, results) => {
+        db.getPatientContents(null, dbData.patient_id, (success, results) => {
             expect(results.length).toBeGreaterThan(0);
             done();
         });
@@ -43,7 +42,7 @@ describe('Server DatabaseAPI', () => {
     });
 
     test('remove youtube content', done => {
-        db.removeSharedContent('test@mail.com','jest',123, (success) => {
+        db.removeSharedContent(dbData.email, dbData.patient_id, dbData.date, (success) => {
             expect(success).toBeTruthy();
             done();
         })

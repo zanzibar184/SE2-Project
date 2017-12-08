@@ -5,7 +5,7 @@ const app = require('../server/app');
 
 // equivalent to fetch with method: 'GET'
 const youtubeSearch = function(searchString) {
-    let url               = '/api/youtube?';
+    let url               = '/api/youtube';
     if(searchString) url += '?search='+ searchString;
     return request(app).get(url);
 };
@@ -60,7 +60,6 @@ describe('Client <-> Server API', () => {
 
     test('does not add youtube content without email and patientID', () => {
 
-        // Per Valentina: l'originale era: request(app).get('/api/db?action=add&date=-1&content_id=youtube&content=youtube_url')
         return dbCall('add', null, dbData.date, dbData.content_id, dbData.content, null).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe(errorParameterMessage);
@@ -68,10 +67,9 @@ describe('Client <-> Server API', () => {
 
     });
 
-    // Per Valentina: sostituire da qui
     test('does not add youtube content without youtube_identifier and youtbe video url', () => {
 
-        return request(app).get('/api/db?action=add&email=test@mail.com&id_patient=jest&date=-1').then(response => {
+        return dbCall('add', dbData.patient_id, dbData.date, null, null, dbData.email).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
@@ -80,7 +78,7 @@ describe('Client <-> Server API', () => {
 
     test('does not add youtube content with youtube_identifier but without youtube video url', () => {
 
-        return request(app).get('/api/db?action=add&email=test@mail.com&id_patient=jest&date=-1&content_id=youtube').then(response => {
+        return dbCall('add', dbData.patient_id, dbData.date, dbData.content_id, null, dbData.email).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
@@ -89,7 +87,7 @@ describe('Client <-> Server API', () => {
 
     test('does not add youtube content with youtbe video url but without youtube_identifier', () => {
 
-        return request(app).get('/api/db?action=add&email=test@mail.com&id_patient=jest&date=-1&content=youtube_url').then(response => {
+        return dbCall('add', dbData.patient_id, dbData.date, null, dbData.content, dbData.email).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
@@ -98,7 +96,7 @@ describe('Client <-> Server API', () => {
 
     test('does not add youtube content without email', () => {
 
-        return request(app).get('/api/db?action=add&id_patient=jest&date=-1&content_id=youtube&content=youtube_url').then(response => {
+        return dbCall('add', dbData.patient_id, dbData.date, dbData.content_id, dbData.content, null).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
@@ -107,7 +105,7 @@ describe('Client <-> Server API', () => {
 
     test('does not add youtube content without patientID', () => {
 
-        return request(app).get('/api/db?action=add&email=test@mail.com&date=-1&content_id=youtube&content=youtube_url').then(response => {
+        return dbCall('add', null, dbData.date, dbData.content_id, dbData.content, dbData.email).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
@@ -116,7 +114,7 @@ describe('Client <-> Server API', () => {
 
     test('adds youtube content', () => {
 
-        return request(app).get('/api/db?action=add&email=test@mail.com&id_patient=jest&date=-1&content_id=youtube&content=youtube_url').then(response => {
+        return dbCall('add', dbData.patient_id, dbData.date, dbData.content_id, dbData.content, dbData.email).then(response => {
             expect(response.statusCode).toBe(200);
             expect(response.text).toBeTruthy();
         });
@@ -125,7 +123,7 @@ describe('Client <-> Server API', () => {
 
     test('find patient content with e-mail', () => {
 
-        return request(app).get('/api/db?action=get&email=test@mail.com&id_patient=jest').then(response => {
+        return dbCall('get', dbData.patient_id, null, null, null, dbData.email).then(response => {
             expect(response.statusCode).toBe(200);
             expect(JSON.parse(response.text).length).toBeGreaterThan(0);
         });
@@ -134,7 +132,7 @@ describe('Client <-> Server API', () => {
 
     test('find patient content without e-mail', () => {
 
-        return request(app).get('/api/db?action=get&id_patient=jest').then(response => {
+        return dbCall('get', dbData.patient_id, null, null, null, null).then(response => {
             expect(response.statusCode).toBe(200);
             expect(JSON.parse(response.text).length).toBeGreaterThan(0);
         });
@@ -143,7 +141,7 @@ describe('Client <-> Server API', () => {
 
     test('does not add patient content with e-mail but without patientID', () => {
 
-        return request(app).get('/api/db?action=get&email=test@mail.com').then(response => {
+        return dbCall('get', null, null, null, null, dbData.email).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
@@ -152,7 +150,7 @@ describe('Client <-> Server API', () => {
 
     test('does not add patient content without e-mail and patientID', () => {
 
-        return request(app).get('/api/db?action=get').then(response => {
+        return dbCall('get', null, null, null, null, null).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
@@ -161,7 +159,7 @@ describe('Client <-> Server API', () => {
 
     test('remove youtube content', () => {
 
-        return request(app).get('/api/db?action=rem&email=test@mail.com&id_patient=jest&date=-1').then(response => {
+        return dbCall('rem', dbData.patient_id, dbData.date, null, null, dbData.email).then(response => {
             expect(response.statusCode).toBe(200);
             expect(response.text).toBeTruthy();
         });
@@ -170,7 +168,7 @@ describe('Client <-> Server API', () => {
 
     test('does not remove youtube content without both email and patientID', () => {
 
-        return request(app).get('/api/db?action=rem&date=-1').then(response => {
+        return dbCall('rem', null, dbData.date, null, null, null).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
@@ -179,7 +177,7 @@ describe('Client <-> Server API', () => {
 
     test('does not remove youtube content without email but with patientID', () => {
 
-        return request(app).get('/api/db?action=rem&id_patient=jest&date=-1').then(response => {
+        return dbCall('rem', dbData.patient_id, dbData.date, null, null, null).then(response => {
             expect(response.statusCode).toBe(200);
             expect(response.text).toBeTruthy();
         });
@@ -188,7 +186,7 @@ describe('Client <-> Server API', () => {
 
     test('does not remove youtube content with email but without patientID', () => {
 
-        return request(app).get('/api/db?action=rem&email=test@mail.com&date=-1').then(response => {
+        return dbCall('rem', null, dbData.date, null, null, dbData.email).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
@@ -197,7 +195,7 @@ describe('Client <-> Server API', () => {
 
     test('adds nothing without other parameters', () => {
 
-        return request(app).get('/api/db?action=add').then(response => {
+        return dbCall('add', null, null, null, null, null).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
@@ -206,7 +204,7 @@ describe('Client <-> Server API', () => {
 
     test('removes nothing without other parameters', () => {
 
-        return request(app).get('/api/db?action=rem').then(response => {
+        return dbCall('rem', null, null, null, null, null).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
@@ -215,7 +213,7 @@ describe('Client <-> Server API', () => {
 
     test('gets nothing without other parameters', () => {
 
-        return request(app).get('/api/db?action=get').then(response => {
+        return dbCall('get', null, null, null, null, null).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe("Parametri errati nella chiamata API.");
         });
