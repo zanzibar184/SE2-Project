@@ -61,7 +61,7 @@ describe('Client <-> Server API', () => {
     test('does not add youtube content without email and patientID', () => {
 
         // Per Valentina: l'originale era: request(app).get('/api/db?action=add&date=-1&content_id=youtube&content=youtube_url')
-        return request(dbCall('add', null, dbData.date, dbData.content_id, dbData.content, null)).then(response => {
+        return dbCall('add', null, dbData.date, dbData.content_id, dbData.content, null).then(response => {
             expect(response.statusCode).toBe(404);
             expect(response.text).toBe(errorParameterMessage);
         });
