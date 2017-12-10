@@ -50,6 +50,7 @@ class SessionManager {
         this.getPatientContents = this.getPatientContents.bind(this);
         this.addSharedContent = this.addSharedContent.bind(this);
         this.removeSharedContent = this.removeSharedContent.bind(this);
+        this.getSaintContent = this.getSaintContent.bind(this);
 
     }
 
@@ -157,6 +158,23 @@ class SessionManager {
     }
 
     //-----------------------------------------------------------------
+    getSaintContent(day,month,callback) {
+      
+       axios.get('/api/saint?day='+day+'&month='+month)
+           .then( (response) => {
+               return response.data;
+           })
+           .then( (data) => {
+               if(callback)
+                   callback(data);
+               else
+                   console.log(data);
+           })
+           .catch( (error) => {
+               console.log("Error on getSaintContent: " + error);
+               if(callback) callback([]);
+           });
+    }
 
 }
 

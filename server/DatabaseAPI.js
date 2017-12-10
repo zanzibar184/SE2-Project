@@ -4,6 +4,7 @@ class DatabaseAPI {
 
         this.mongodb = require('mongodb');
         this.uri = 'mongodb://kio:kio@ds119446.mlab.com:19446/kioku_chatbot';
+
         
     }
 
@@ -165,6 +166,117 @@ class DatabaseAPI {
         return true;
     };
 
+    //----------------------------------------------------------------------------
+      insertSaint(day, month, saint) {
+
+        if(!day || !month || !saint)
+            return false;
+
+        let seedData = [
+          {
+            giorno: day,
+            mese: month,
+            santo: saint,
+          }
+        ];
+
+        let database = null;
+
+        this.mongodb.MongoClient.connect(this.uri)
+            .then((db) => {
+                database = db;
+                return db.collection('daily_saint');
+            })
+            .then((table) => {
+                return table.insert(seedData);
+            })
+            .catch((err) => {
+                console.log("Error: database.newSanto > " + err);
+            })
+            .then(() => {
+                if(database) {
+                    database.close();
+                }
+            });
+
+        return true;
+     }
+
+    printSaint() {
+
+        let database = null;
+        this.mongodb.MongoClient.connect(this.uri)
+            .then((db) => {
+                database = db;
+                return db.collection('daily_saint');
+            })
+            .then((table) => {
+                return table.find({
+                  mese: 12,
+                  giorno: 31
+                });
+
+            }).then((cursor) => {
+               return cursor.toArray();
+            })
+            .then((array) => {
+                //console.log(array);
+                let results = [];
+                array.forEach( (element) => {
+                    results.push({giorno: element.giorno, mese: element.mese, santo: element.santo});
+                });
+                console.log(results);
+            })
+            .catch((err) => {
+                console.log("Error: database.printSaint" + err);
+            })
+            .then(() => {
+                if(database) {
+                    database.close();
+                }
+            });
+
+        return true;
+
+             };
+
+
+      getSaint(day,month, callback) {
+
+        let database = null;
+        this.mongodb.MongoClient.connect(this.uri)
+            .then((db) => {
+                database = db;
+                return db.collection('daily_saint');
+            })
+            .then((table) => {
+                  return table.find({
+                      mese: month,
+                      giorno: day
+                  });
+            }).then((cursor) => {
+               return cursor.toArray();
+            })
+            .then((array) => {
+                //console.log(array);
+                let results = [];
+                array.forEach( (element) => {
+                    results.push({giorno: element.giorno, mese: element.mese, santo: element.santo});
+                });
+                callback(true, results);
+            })
+            .catch((err) => {
+                console.log("Error: database.getPatientContents " + err);
+                callback(false);
+            })
+            .then(() => {
+                if(database) {
+                    database.close();
+                }
+            });
+
+        return true;
+    };
     //----------------------------------------------------------------------------
 
      //stampa gli elementi della tabella

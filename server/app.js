@@ -101,12 +101,24 @@ function handleAPIYoutube(req, res) {
 
 //----------------------------------------------------------------------------------------------
 
+function handleAPISaint(req, res) {
+    return db.getSaint(parseInt(req.query.day), parseInt(req.query.month), (success, results) => {
+                if(success) res.send(results);
+                else res.status(404).send([]);
+            });
+
+}
+
+//----------------------------------------------------------------------------------------------
+
 function handleAPIRequest(req, res) {
     switch (req.params.id) {
         case 'youtube':
             return handleAPIYoutube(req, res);
         case 'db':
             return handleAPIDatabase(req,res);
+        case 'saint':
+            return handleAPISaint(req,res);
         default:
             res.status(404).send("Chiamata API non riconosciuta.");
     }
