@@ -23,22 +23,13 @@ class ChatBot extends React.Component {
         // Bind del metodo sendInput per poterlo utilizzare all'interno del metodo render()
         this.sendInput = this.sendInput.bind(this);
 
-        //--------------------------------------------------
-
-        session.addLoginCallback( (isLogged) => {
-
-            let message = (isLogged)?'Benvenuto ' + session.getLoggedUser().getName() + "! Cosa posso fare per te?"
-                                    : 'Arrivederci a presto!';
-            this.messageList.addComponent(<a className='list-group-item Msj_server'><b><i>{message}</i></b></a>);
-        })
-
-        //--------------------------------------------------
-
     }
 
-    // Chiamato da React quando il componente è montato per la prima volta
+    // Chiamato da React quando il componente è montato per la prima volta, da il benvenuto
     componentDidMount() {
-
+        if(!session.isLogged()) return;
+        let message = 'Benvenuto/a ' + session.getLoggedUser().getName() + '! Per iniziare scrivi inizio';
+        this.messageList.addComponent(<a className='list-group-item Msj_server'><b><i>{message}</i></b></a>);
     }
 
     // Manda un messaggio scritto dall'utente a Dialogflow e ne legge la risposta
@@ -48,7 +39,7 @@ class ChatBot extends React.Component {
         let input = document.getElementById('cbInput');
 
         // aggiunto da Vale: prende l'istanza del componente che poi passeremo come parametro a YoutubeSearch tramite ref
-        let videoRef = (instance)=>{instance.componentList = this.componentList};
+        let videoRef = (instance)=>{instance.multimediaContents = this.multimediaContents};
 
         // Controllo che il client sia inizializzato, e che l'input utente esista e non sia vuoto
         if(!this.client || !input || !input.value) return;
@@ -63,14 +54,14 @@ class ChatBot extends React.Component {
 
         // Easter egg
         if(input.value==='faaantastico') {
-            let video = <div className="row thumbnail flex-row Container-multimedia Second-media-color center-block" style={{maxWidth:'823px', marginBottom:'5px'}}>
+            let video = <div className="row thumbnail flex-row Second-media-color center-block" style={{maxWidth:'823px', marginBottom:'5px'}}>
                     <div className="col-lg-12 center-block">
                         <div className="Youtube-dim">
                             <YoutubePlayer videoId='nMZJKGyu-Kk' />
                         </div>
                     </div>
                 </div>;
-            this.componentList.addComponent(video);
+            this.multimediaContents.addComponent(video);
             return;
         }
 
@@ -83,9 +74,9 @@ class ChatBot extends React.Component {
                 // ... riporto nella console del browser il JSON di risposta
                 console.log(response);/* do something */
 
-                // 'this.componentList' è l'istanza ad un componente 'ComponentList' che memorizza la lista
+                // 'this.multimediaContents' è l'istanza ad un componente 'ComponentList' che memorizza la lista
                 // dei contenuti multimediali da mostrare sullo schermo (lato sinistro)
-                if(this.componentList) {
+                if(this.multimediaContents) {
 
                     // Se nel JSON di risposta c'è un'azione collegata alla ricerca video..
                     if(response.result.action === "RicercaVideoYT.video-cerca" || response.result.action === "videoDiretto") {
@@ -93,7 +84,7 @@ class ChatBot extends React.Component {
                         let searchText = response.result.parameters.cercaVideo;
                         // e aggiungo i video trovati alla lista dei contenuti multimediali
                         if (searchText)
-                            this.componentList.addComponent(<YoutubeSearch ref={videoRef} search={searchText}/>); /*TODO: gestione errore*/
+                            this.multimediaContents.addComponent(<YoutubeSearch ref={videoRef} search={searchText}/>); /*TODO: gestione errore*/
                     } // Se invece c'è un'azione collegata alla ricerca di una canzione
                     else if(response.result.action === "cercaCanzone.nomeCanzone") {
                             // Ottiene il nome dell'artista e/o della canzone
@@ -101,13 +92,13 @@ class ChatBot extends React.Component {
                             let searchCanzone = response.result.parameters.cercaCanzone;
                             // Fa una ricerca in base alla presenza di questi parametri
                             if (searchArtista && !searchCanzone)
-                                this.componentList.addComponent(<YoutubeSearch
+                                this.multimediaContents.addComponent(<YoutubeSearch
                                     ref={videoRef}
                                     search={"canzone di " + searchArtista}/>);
                             else if (!searchArtista && searchCanzone)
-                                this.componentList.addComponent(<YoutubeSearch ref={videoRef} search={"canzone " + searchCanzone}/>);
+                                this.multimediaContents.addComponent(<YoutubeSearch ref={videoRef} search={"canzone " + searchCanzone}/>);
                             else if (searchArtista && searchCanzone)
-                                this.componentList.addComponent(<YoutubeSearch
+                                this.multimediaContents.addComponent(<YoutubeSearch
                                     ref={videoRef}
                                     search={"canzone " + searchCanzone + " di " + searchArtista}/>);
                             /*TODO: gestione errore*/
@@ -121,22 +112,23 @@ class ChatBot extends React.Component {
                     // Per ogni messaggio di risposta preso singolarmente ('item')
                     respMessages.forEach((item)=> {
                         let messaggio =  item.speech;
-                        if(response.result.action === "Aiuto.tipoAiuto" || response.result.action === "aiutoDiretto") { //se e' una richiesta di aiuto
+                        if(response.result.action === "Aiuto.tipoAiuto" || response.result.action === "aiutoDiretto")
+                        { //se e' una richiesta di aiuto
                             let cercaAiuto = response.result.parameters.Aiuto;
-                            if (cercaAiuto === "video") //se ha biogno di aiuto per i video
-                            {
-                                messaggio = <p>Se vuoi cercare un video scrivi <em>"Voglio cercare un video"</em>. <br/> Alla risposta del chatbot <em>"Che video vuoi vedere?"</em> potrai rispondere direttamente con il testo che vuoi cercare su Youtube o con l'argomento di cui vuoi trovare il video. <br/>Appariranno alla tua sinistra i primi 4 risultati e potrai vedere i video cliccandoci sopra.</p>
-                            }else if (cercaAiuto === "canzone") //se ha biogno di aiuto per le canozoni
-                            {
-                                messaggio = <p>Se vuoi cercare un video scrivi <em>"Voglio cercare una canzone"</em>. Alla risposta del chatbot <em>"Che canzone vuoi ascoltare?"</em> potrai rispondere con il titolo della canzone, con il nuome dell'artista o con entrambi. Appariranno alla tua sinistra i primi 4 risultati e potrai ascoltare la canzone cliccandoci sopra.</p>
-                            }else if (cercaAiuto === "login") //se ha biogno di aiuto per il login
-                            {
-                                messaggio = <p>Per poter condividere i contenuti con un altro dispositivo è necessario fare il login. Per fare login clicca sul logo in alto a destra e segui le indicazioni. Il login potrà essere effettuato solo con un account Google.</p>
-                            }else if (cercaAiuto === "condividere") //se ha biogno di aiuto per la conivisione dei contenuti
-                            {
-                                messaggio = <p>Per poter condividere i contenuti con un altro dispositivo devi avere eseguito il login.</p> /*TODO: da completare*/
-                            }
-                        } else if(response.result.action === "sceltaArgomento.tipoArgomento") //se ha bisogno di suggerimento sull'arogomento
+                                if (cercaAiuto === "video") //se ha bisogno di aiuto per i video
+                                {
+                                    messaggio = <p>Se vuoi cercare un video scrivi <em>"Voglio cercare un video"</em>. <br/> Alla risposta del chatbot <em>"Che video vuoi vedere?"</em> potrai rispondere direttamente con il testo che vuoi cercare su Youtube o con l'argomento di cui vuoi trovare il video. <br/>Appariranno alla tua sinistra i primi 4 risultati e potrai vedere i video cliccandoci sopra.</p>
+                                }else if (cercaAiuto === "canzone") //se ha bisogno di aiuto per le canzoni
+                                {
+                                    messaggio = <p>Se vuoi cercare un video scrivi <em>"Voglio cercare una canzone"</em>. Alla risposta del chatbot <em>"Che canzone vuoi ascoltare?"</em> potrai rispondere con il titolo della canzone, con il nuome dell'artista o con entrambi. Appariranno alla tua sinistra i primi 4 risultati e potrai ascoltare la canzone cliccandoci sopra.</p>
+                                }else if (cercaAiuto === "login") //se ha bisogno di aiuto per il login
+                                {
+                                    messaggio = <p>Per poter condividere i contenuti con un altro dispositivo è necessario fare il login. Per fare login clicca sul logo in alto a destra e segui le indicazioni. Il login potrà essere effettuato solo con un account Google.</p>
+                                }else if (cercaAiuto === "condividere") //se ha bisogno di aiuto per la conivisione dei contenuti
+                                {
+                                    messaggio = <p>Per poter condividere i contenuti con un altro dispositivo devi avere eseguito il login.</p> /*TODO: da completare*/
+                                }
+                        }else if(response.result.action === "sceltaArgomento.tipoArgomento") //se ha bisogno di suggerimento sull'arogomento
                         {
                             let cercaArgomento = response.result.parameters.tipoArgomento;
                             if(cercaArgomento === "Tempo libero")
@@ -165,11 +157,14 @@ class ChatBot extends React.Component {
                                 messaggio = <p>Potresti chiedergli/le di raccontare qualche aneddoto dell'infanzia. Se ha dei fratelli/sorelle magari ti puo' raccontare quando erano piccoli a cosa giocavano, se facevano qualche attivita' insieme.</p>
                             }else if(cercaArgomento === "Canzoni")
                             {
-                                messaggio = <p>Potresti chiedergli/le della sua canzone preferita e del suo cantante preferito. Potresti chiedergli/le cosa ascoltava da ragazzo e se quella canzon gli/le ricorda qualche momento o evento della sua vita</p>
+                                messaggio = <p>Potresti chiedergli/le della sua canzone preferita e del suo cantante preferito. Potresti chiedergli/le cosa ascoltava da ragazzo e se quella canzon gli/le ricorda qualche momento o evento della sua vita.</p>
                             }else if(cercaArgomento === "Danza")
                             {
                                 messaggio = <p>Potresti cheidergli/le se gli piace/piaceva ballare e che ballo. Come ha imparato a ballare?</p>
                             }
+                        }else if(response.result.action === "alberoGenealogico")
+                        {
+                            messaggio = <p>Potresti iniziare chiedendogli di suo/a marito/moglie per poi parlare dei figli e a loro volta se si sono sposati e se hanno avuto figli. <br/> Per ogni persona si può chiedere se ha qualche aneddoto o cosa gli/le piace/piaceva fare insieme.</p>
                         }
 
                         if(item.speech)// se non vuoto mostro il testo di quel messaggio aggiungendolo a messageList
@@ -178,8 +173,10 @@ class ChatBot extends React.Component {
                 }
 
                 // Forzo la scroll-bar dei messaggi utente/Dialogflow a scendere per mostrare il contenuto più recente
+                // FIXME: Su Microsoft Edge non funziona 'scrollTo' (testato e funzionante su Safari e Firefox)
                 let container = document.getElementById('cbMessageContainer');
-                container.scrollTo(0,container.scrollHeight);
+                if(container && container.scrollTo)
+                    container.scrollTo(0,container.scrollHeight);
 
             }) // Poi: elimino il testo contenuto nell'input utente (dal momento che è già stato processato)
             .then(()=>{ input.value = ''; })

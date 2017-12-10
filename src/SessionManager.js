@@ -16,7 +16,7 @@ Esempi di utilizzo in un altro modulo / componente:
     Session.login(loginUserProfile);
 
     let myContentList;
-    Session.getSharedContents((list)=>{ myContentList = list; });
+    Session.getPatientContents((list)=>{ myContentList = list; });
 
     Session.addSharedContent('youtube', 'url_del_video')
 
@@ -36,7 +36,7 @@ class SessionManager {
 
         // Attualmente, per semplicità, gestiamo un solo paziente per operatore ma
         // è possibile avere più pazienti assegnando valori diversi a questa variabile
-        this.patientID = 'p0'; // 'pippo';
+        this.patientID = null; // 'p0';
 
         this.onLoginEventCallbacks = [];
 
@@ -45,8 +45,9 @@ class SessionManager {
         this.logout = this.logout.bind(this);
         this.getLoggedUser = this.getLoggedUser.bind(this);
         this.getPatientID = this.getPatientID.bind(this);
+        this.setPatientID = this.setPatientID.bind(this);
         this.isLogged = this.isLogged.bind(this);
-        this.getSharedContents = this.getSharedContents.bind(this);
+        this.getPatientContents = this.getPatientContents.bind(this);
         this.addSharedContent = this.addSharedContent.bind(this);
         this.removeSharedContent = this.removeSharedContent.bind(this);
 
@@ -80,18 +81,22 @@ class SessionManager {
 
     getPatientID() { return this.patientID; }
 
+    setPatientID(patientId) { this.patientID = patientId; }
+
     isLogged() { return this.loginUserProfile && this.patientID; }
 
     //-----------------------------------------------------------------
 
-    getSharedContents(callback) {
+    // Non serve essere loggati per questo metodo
+    getPatientContents(callback) {
 
-       if(!this.isLogged()) {
-           if(callback) callback([]);
-           return;
-       }
+        if(!this.patientID) {
+            if(callback) callback([]);
+            return;
+        }
 
-       axios.get('/api/db?action=get&email='+this.loginUserProfile.getEmail()+'&id_patient='+this.patientID)
+       // axios.get('/api/db?action=get&email='+this.loginUserProfile.getEmail()+'&id_patient='+this.patientID)
+       axios.get('/api/db?action=get&id_patient='+this.patientID)
            .then( (response) => {
                return response.data;
            })
@@ -136,7 +141,8 @@ class SessionManager {
             return;
         }
 
-        axios.get('/api/db?action=rem&email='+this.loginMail+'&id_patient='+this.patientID+'&date=' + time)
+        //axios.get('/api/db?action=rem&email='+this.loginMail+'&id_patient='+this.patientID+'&date=' + time)
+        axios.get('/api/db?action=rem&id_patient='+this.patientID+'&date=' + time)
             .then( (response) => {
                 return response.data;
             })

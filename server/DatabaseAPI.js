@@ -8,9 +8,9 @@ class DatabaseAPI {
     }
 
     //scrive un nuovo elemento
-    addSharedContent(email, id_patient, date, content_id, content) {
+    addSharedContent(email, id_patient, date, content_id, content, callback) {
 
-        if(!email || !id_patient || !date || !content_id || !content)
+        if(!email || !id_patient || !date || !content_id || !content || !callback)
             return false;
 
         let seedData = [
@@ -25,7 +25,6 @@ class DatabaseAPI {
         ];
 
         let database = null;
-        let retValue = true;
 
         this.mongodb.MongoClient.connect(this.uri)
             .then((db) => {
@@ -36,10 +35,11 @@ class DatabaseAPI {
                 return table.insert(seedData);
             })
             .then((result)=> {
-                console.log(result);
+                callback(true);
+                //console.log(result);
             })
             .catch((err) => {
-                retValue = false;
+                callback(false);
                 console.log("Error: database.addSharedContent > " + err);
             })
             .then(() => {
@@ -48,17 +48,45 @@ class DatabaseAPI {
                 }
             });
 
-        return retValue;
+        return true;
+     }
+
+     removeAll() {
+
+         let database = null;
+
+
+         this.mongodb.MongoClient.connect(this.uri)
+             .then((db) => {
+                 database = db;
+                 return db.collection('shared_content');
+             })
+             .then((table) => {
+                 return table.deleteMany({});
+             })
+             .then((doc, result)=> {
+                 console.log(result);
+             })
+             .catch((err) => {
+                 console.log("Error: database.removeAll > " + err);
+             })
+             .then(() => {
+                 if(database) {
+                     database.close();
+                 }
+             });
+
+         return true;
      }
 
     // rimuove un elemento esistente
-    removeSharedContent(email_r, id_patient_r, date_r) {
+    removeSharedContent(email_r, id_patient_r, date_r, callback) {
 
-        if(!email_r || !id_patient_r || !date_r)
+        if(!id_patient_r || !date_r || !callback)
             return false;
 
         let database = null;
-        let retValue = true;
+
 
         this.mongodb.MongoClient.connect(this.uri)
             .then((db) => {
@@ -66,17 +94,22 @@ class DatabaseAPI {
                 return db.collection('shared_content');
             })
             .then((table) => {
-                return table.remove(
-                    {email: email_r,
-                    id_patient: id_patient_r,
-                    date: date_r});
+                return (email_r) ?
+                      table.remove(
+                        { email: email_r,
+                        id_patient: id_patient_r,
+                        date: date_r}, {justOne: false } )
+                    : table.remove(
+                        { id_patient: id_patient_r,
+                          date: date_r}, {justOne: false })
             })
             .then((result)=> {
-                console.log(result);
+                callback(true);
+                //console.log(result);
             })
             .catch((err) => {
-                retValue = false;
                 console.log("Error: database.removeSharedContent > " + err);
+                callback(false);
             })
             .then(() => {
                 if(database) {
@@ -84,36 +117,44 @@ class DatabaseAPI {
                 }
             });
 
-        return retValue;
+        return true;
     }
 
-    getPatientContents(email_f,id_patient_f, res) {
+    getPatientContents(email_f,id_patient_f, callback) {
 
-       if(!email_f || !id_patient_f || !res ) return false;
+       if(!id_patient_f || !callback) return false;
 
         let database = null;
-        let retValue = true;
-
         this.mongodb.MongoClient.connect(this.uri)
             .then((db) => {
                 database = db;
                 return db.collection('shared_content');
             })
             .then((table) => {
-                return table.find({
-                    email: email_f,
-                    id_patient: id_patient_f
-                });
+            	if(!email_f)
+	                return table.find({
+	                    id_patient: id_patient_f
+	                });
+	            else
+	            	return table.find({
+	                    email: email_f,
+	                    id_patient: id_patient_f
+	                });
+
             }).then((cursor) => {
                return cursor.toArray();
             })
             .then((array) => {
-                res.send(array);
+                //console.log(array);
+                let results = [];
+                array.forEach( (element) => {
+                    results.push({content: element.content, content_id: element.content_id, date: element.date});
+                });
+                callback(true, results);
             })
             .catch((err) => {
-                retValue = false;
-                res.status(404).send([]);
-                console.log("Error: database.removeSharedContent > " + err);
+                console.log("Error: database.getPatientContents " + err);
+                callback(false);
             })
             .then(() => {
                 if(database) {
@@ -121,7 +162,7 @@ class DatabaseAPI {
                 }
             });
 
-        return retValue;
+        return true;
     };
 
     //----------------------------------------------------------------------------
