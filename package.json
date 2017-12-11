@@ -1,8 +1,8 @@
 {
   "name": "kioku",
   "version": "0.1.0",
-  "private": true,
-  "proxy": "http://localhost:3001",
+  "private": false,
+  "proxy": "https://127.0.0.1",
   "dependencies": {
     "api-ai-javascript": "^2.0.0-beta.21",
     "axios": "^0.17.1",
@@ -24,7 +24,7 @@
     "youtube-finder": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server",
     "build": "react-scripts build",
     "test": "jest --verbose",
     "eject": "react-scripts eject"
