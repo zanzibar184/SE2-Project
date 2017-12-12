@@ -1,0 +1,93 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: "Kioku"
+  description: Specifica delle api offerte dal nostro prodotto
+  contact:
+    name: Mallocs API Team
+    email: kioku.chatbot@gmail.com
+host: boiling-reef-85654.herokuapp.com
+basePath: /api
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /db:
+    get:
+      description: |
+          esegue azione nel database
+          
+          il parametro action può assumere tre valori
+          
+          -get ricerca dati nel db
+          
+          -add inserisce dati
+          
+          -remove rimuove dati
+      operationId: db_interaction
+      parameters:
+      
+        - name: action
+          in: query
+          description: specifica l'azione da eseguire
+          required: true
+          type: string
+          collectionFormat: csv
+          x-example: 'get'
+          
+          items:
+            type: string
+            
+        - name: email
+          in: query
+          description: email da ricercare
+          required: true
+          type: string
+          collectionFormat: csv
+          items:
+            type: string
+          x-example: 'kioku.chatbot@gmail.com'
+            
+        - name: id_patient
+          in: query
+          description: id dell'operatore da ricercare
+          required: true
+          type: string
+          collectionFormat: csv
+          items:
+            type: string
+          x-example: 'p0'
+          
+      responses:
+        200:
+          description: db response
+          schema:
+            type: string
+        default:
+          description: chiamata API fallita
+  /youtube:
+    get:
+      description: |
+          Passando attraverso il parametro search una stringa di testo, restituirà un json contenente i dati dei primi quattro video risultanti dalla ricerca nel sito youtube.com
+      operationId: youtube_search
+      parameters:
+      
+        - name: search
+          in: query
+          description: stringa di testo da ricercare
+          required: true
+          type: string
+          collectionFormat: csv
+          items:
+            type: string
+          
+      responses:
+        200:
+          description: db response
+          schema:
+            type: string
+        default:
+          description: chiamata API fallita
